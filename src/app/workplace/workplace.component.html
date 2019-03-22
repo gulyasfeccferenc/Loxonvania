@@ -1,5 +1,14 @@
-<div class="container text-center">
-  <div class="card">
-    Ez lesz a programozók helye
+<div class="container text-center p-2 mt-5">
+  <div class="row">
+    <div class="col-sm-4" *ngFor="let unit of units">
+      <div class="card" style="width: 18rem;">
+        <img src="https://img.itch.zone/aW1nLzE3NzcwMDAuZ2lm/original/%2Bto%2BJv.gif" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ unit.name }}</h5>
+          <p class="card-text">{{ unit.produce }}</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

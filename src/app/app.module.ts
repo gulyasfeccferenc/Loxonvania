@@ -8,6 +8,7 @@ import { HeaderComponent } from './common/header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WorkplaceComponent } from './workplace/workplace.component';
 import { AchievmentsComponent } from './achievments/achievments.component';
+import { WorkerComponent } from './models/worker/worker.component';
 
 const appRoutes: Routes = [
   // {
@@ -33,7 +34,8 @@ const appRoutes: Routes = [
     HeaderComponent,
     DashboardComponent,
     WorkplaceComponent,
-    AchievmentsComponent
+    AchievmentsComponent,
+    WorkerComponent
   ],
   imports: [
     BrowserModule,
