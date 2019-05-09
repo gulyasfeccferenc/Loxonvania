@@ -9,7 +9,10 @@ export class WorkerComponent implements OnInit {
   name: string;
   produce: number;
 
-  constructor() { }
+  constructor(name: string, produce: number) {
+    this.name = name;
+    this.produce = produce;
+  }
 
   ngOnInit() {
   }
