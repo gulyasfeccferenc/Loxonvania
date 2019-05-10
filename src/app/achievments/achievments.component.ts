@@ -9,12 +9,15 @@ import { LevelComponent } from '../models/level/level.component';
 })
 export class AchievmentsComponent implements OnInit {
   levels: LevelComponent[] = [
-    new LevelComponent(1, 'Kezdő')
+    new LevelComponent(1, 'Kezdő'),
+    new LevelComponent(2, 'Haladó'),
+    new LevelComponent(3, 'Profi'),
+    new LevelComponent(4, 'Kiülőmester')
   ];
   achievments: AchievmentComponent[] = [
-    new AchievmentComponent('asdf', '123', 3),
-    new AchievmentComponent('asdf', '123', 3),
-    new AchievmentComponent('asdf', '123', 3)
+    new AchievmentComponent('Pontduplázó', 'x2', 3),
+    new AchievmentComponent('Max termelékenység', '+123', 3),
+    new AchievmentComponent('$$$ PROFIT', '$$$', 3)
   ];
 
   constructor() { }
