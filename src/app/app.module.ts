@@ -11,6 +11,7 @@ import { AchievmentsComponent } from './achievments/achievments.component';
 import { WorkerComponent } from './models/worker/worker.component';
 import { AchievmentComponent } from './models/achievment/achievment.component';
 import { LevelComponent } from './models/level/level.component';
+import { WidgetComponent } from './widget/widget.component';
 
 const appRoutes: Routes = [
   // {
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     AchievmentsComponent,
     WorkerComponent,
     AchievmentComponent,
-    LevelComponent
+    LevelComponent,
+    WidgetComponent
   ],
   imports: [
     BrowserModule,
