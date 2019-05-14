@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkerComponent } from '../models/worker/worker.component';
+import {UnitService} from '../unit.service';
 
 @Component({
   selector: 'app-workplace',
   templateUrl: './workplace.component.html',
-  styleUrls: ['./workplace.component.sass']
+  styleUrls: ['./workplace.component.sass'],
+  providers: [UnitService]
 })
 export class WorkplaceComponent implements OnInit {
-  units: WorkerComponent[] = [
-    new WorkerComponent( 'Milán',  10),
-    new WorkerComponent(  'Milcsi',  100),
-    new WorkerComponent('Milos',  250),
-    new WorkerComponent( 'Oidipus Milos', 1000)];
+  units: WorkerComponent[] = [];
 
-  constructor() { }
+  constructor(private unitService: UnitService) {
+    this.units = unitService.units;
+  }
 
   ngOnInit() {
   }

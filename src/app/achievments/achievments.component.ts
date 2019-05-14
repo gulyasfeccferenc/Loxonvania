@@ -1,26 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { AchievmentComponent } from '../models/achievment/achievment.component';
 import { LevelComponent } from '../models/level/level.component';
+import {AchievmentService} from '../achievment.service';
 
 @Component({
   selector: 'app-achievments',
   templateUrl: './achievments.component.html',
-  styleUrls: ['./achievments.component.sass']
+  styleUrls: ['./achievments.component.sass'],
+  providers: [AchievmentService]
 })
 export class AchievmentsComponent implements OnInit {
-  levels: LevelComponent[] = [
-    new LevelComponent(1, 'Kezdő'),
-    new LevelComponent(2, 'Haladó'),
-    new LevelComponent(3, 'Profi'),
-    new LevelComponent(4, 'Kiülőmester')
-  ];
-  achievments: AchievmentComponent[] = [
-    new AchievmentComponent('Pontduplázó', 'x2', 3),
-    new AchievmentComponent('Max termelékenység', '+123', 3),
-    new AchievmentComponent('$$$ PROFIT', '$$$', 3)
-  ];
+  levels: LevelComponent[] = [];
+  achievments: AchievmentComponent[] = [];
 
-  constructor() { }
+  constructor(private achievmentService: AchievmentService) {
+    this.levels = achievmentService.levels;
+    this.achievments = achievmentService.achievments;
+  }
 
   ngOnInit() {
   }
