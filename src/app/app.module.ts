@@ -12,6 +12,9 @@ import { WorkerComponent } from './models/worker/worker.component';
 import { AchievmentComponent } from './models/achievment/achievment.component';
 import { LevelComponent } from './models/level/level.component';
 import { WidgetComponent } from './widget/widget.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { SigninComponent } from './auth/signin/signin.component';
+import {FormsModule} from '@angular/forms';
 
 const appRoutes: Routes = [
   // {
@@ -41,12 +44,15 @@ const appRoutes: Routes = [
     WorkerComponent,
     AchievmentComponent,
     LevelComponent,
-    WidgetComponent
+    WidgetComponent,
+    SignupComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(appRoutes, {enableTracing: true})
+    RouterModule.forRoot(appRoutes, {enableTracing: true}),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
