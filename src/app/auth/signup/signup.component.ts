@@ -8,10 +8,9 @@ import {AuthService} from '../auth.service';
   styleUrls: ['./signup.component.sass']
 })
 export class SignupComponent implements OnInit {
+  company = 'my company';
 
-  constructor(private authService: AuthService) {
-
-  }
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
   }
@@ -21,5 +20,12 @@ export class SignupComponent implements OnInit {
     const password = form.value.password;
     const company = form.value.company;
     this.authService.signupUser(email, password, company);
+  }
+
+  companyNameRefreshed(f) {
+    this.company = f;
+    if (this.company.length === 0) {
+      this.company = 'my company';
+    }
   }
 }

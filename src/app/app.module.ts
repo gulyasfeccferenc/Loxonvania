@@ -17,6 +17,7 @@ import { SigninComponent } from './auth/signin/signin.component';
 import {FormsModule} from '@angular/forms';
 import {AuthService} from './auth/auth.service';
 import {AuthGuardService} from './auth/auth-guard.service';
+import {CompanyNamePipe} from './common/companyname.pipe';
 
 const appRoutes: Routes = [
   // {
