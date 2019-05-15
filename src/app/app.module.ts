@@ -15,6 +15,8 @@ import { WidgetComponent } from './widget/widget.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import {FormsModule} from '@angular/forms';
+import {AuthService} from './auth/auth.service';
+import {AuthGuardService} from './auth/auth-guard.service';
 
 const appRoutes: Routes = [
   // {
@@ -54,7 +56,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, {enableTracing: true}),
     FormsModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
