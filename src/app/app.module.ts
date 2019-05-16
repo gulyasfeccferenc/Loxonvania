@@ -8,7 +8,6 @@ import { HeaderComponent } from './common/header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WorkplaceComponent } from './workplace/workplace.component';
 import { AchievmentsComponent } from './achievments/achievments.component';
-import { WorkerComponent } from './models/worker/worker.component';
 import { AchievmentComponent } from './models/achievment/achievment.component';
 import { LevelComponent } from './models/level/level.component';
 import { WidgetComponent } from './widget/widget.component';
@@ -17,7 +16,7 @@ import { SigninComponent } from './auth/signin/signin.component';
 import {FormsModule} from '@angular/forms';
 import {AuthService} from './auth/auth.service';
 import {AuthGuardService} from './auth/auth-guard.service';
-import {CompanyNamePipe} from './common/companyname.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 const appRoutes: Routes = [
   // {
@@ -44,7 +43,6 @@ const appRoutes: Routes = [
     DashboardComponent,
     WorkplaceComponent,
     AchievmentsComponent,
-    WorkerComponent,
     AchievmentComponent,
     LevelComponent,
     WidgetComponent,
@@ -55,7 +53,8 @@ const appRoutes: Routes = [
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(appRoutes, {enableTracing: true}),
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [AuthService, AuthGuardService],
   bootstrap: [AppComponent]

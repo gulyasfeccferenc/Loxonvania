@@ -1,14 +1,30 @@
-import {WorkerComponent} from './models/worker/worker.component';
+import {WorkerModel} from './models/worker/worker.model';
+import {HttpClient} from '@angular/common/http';
+import {Subject} from 'rxjs';
+import {Injectable} from '@angular/core';
 
+@Injectable({ providedIn: 'root' })
 export class UnitService {
-  units = [
-    new WorkerComponent( 'Milán',  10),
-    new WorkerComponent(  'Milcsi',  100),
-    new WorkerComponent('Milos',  250),
-    new WorkerComponent( 'Oidipus Milos', 1000)
-  ];
+  private units: WorkerModel[] = [];
+  private unitsUpdated = new Subject<WorkerModel[]>();
+
+  constructor(private httpClient: HttpClient) { };
 
   addUnit(name: string, produce: number) {
-    this.units.push(new WorkerComponent(name, produce));
+    this.units.push({name, produce});
+  }
+
+  getUnits() {
+    this.httpClient
+      .get<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units')
+      .subscribe(
+        postData => {
+          this.units = postData.units;
+          this.unitsUpdated.next(this.units.slice());
+        });
+  }
+
+  getUnitsUpdatedListener() {
+    return this.unitsUpdated.asObservable();
   }
 }

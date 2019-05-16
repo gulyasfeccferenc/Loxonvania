@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AchievmentComponent } from '../models/achievment/achievment.component';
-import { LevelComponent } from '../models/level/level.component';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AchievmentService} from '../achievment.service';
+import {Level} from '../models/level/level.model';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-achievments',
@@ -9,16 +9,25 @@ import {AchievmentService} from '../achievment.service';
   styleUrls: ['./achievments.component.sass'],
   providers: [AchievmentService]
 })
-export class AchievmentsComponent implements OnInit {
-  levels: LevelComponent[] = [];
-  achievments: AchievmentComponent[] = [];
+export class AchievmentsComponent implements OnInit, OnDestroy {
+  levels: Level[] = [];
+  private levelsSubscription: Subscription;
 
   constructor(private achievmentService: AchievmentService) {
-    this.levels = achievmentService.levels;
-    this.achievments = achievmentService.achievments;
+    achievmentService.getLevels();
+    this.levelsSubscription = this.achievmentService
+      .getAchievmentsUpdatedListener()
+      .subscribe( (levels: Level[]) => {
+        this.levels = levels;
+    });
+    this.levels = achievmentService.getLevels();
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.levelsSubscription.unsubscribe();
   }
 
 }
