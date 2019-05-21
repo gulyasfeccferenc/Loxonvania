@@ -20,7 +20,7 @@ export class AchievmentsComponent implements OnInit, OnDestroy {
       .subscribe( (levels: Level[]) => {
         this.levels = levels;
     });
-    this.levels = achievmentService.getLevels();
+    // this.levels = achievmentService.getLevels();
   }
 
   ngOnInit() {

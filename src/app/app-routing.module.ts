@@ -6,14 +6,17 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {AuthGuardService} from './auth/auth-guard.service';
 import {WorkplaceComponent} from './workplace/workplace.component';
 import {AchievmentsComponent} from './achievments/achievments.component';
+import {LoggedoutComponent} from './auth/loggedout/loggedout.component';
 
 
 const routes: Routes = [
-  {path: '', component: DashboardComponent, canActivate: [AuthGuardService]},
+  {path: '', component: SignupComponent},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
   {path: 'workplace', component: WorkplaceComponent, canActivate: [AuthGuardService]},
   {path: 'achievments', component: AchievmentsComponent, canActivate: [AuthGuardService]},
   {path: 'signup', component: SignupComponent},
-  {path: 'signin', component: SigninComponent}
+  {path: 'signin', component: SigninComponent},
+  {path: 'loggedout', component: LoggedoutComponent}
 ];
 
 @NgModule({

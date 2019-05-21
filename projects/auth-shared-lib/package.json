@@ -1,0 +1,12 @@
+{
+  "name": "auth-shared-lib",
+  "version": "1.0.6",
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "@auth0/angular-jwt": "^2.1.0"
+  },
+  "publishConfig": {
+    "registry": "http://repo.intranet.loxon.eu/repository/experimental-lab-NPM-RELEASE/"
+  }
+}

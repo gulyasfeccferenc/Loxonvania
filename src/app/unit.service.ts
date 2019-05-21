@@ -11,7 +11,7 @@ export class UnitService {
   constructor(private httpClient: HttpClient) { };
 
   addUnit(name: string, produce: number) {
-    this.units.push({name, produce});
+    // this.units.push({name, produce});
   }
 
   getUnits() {

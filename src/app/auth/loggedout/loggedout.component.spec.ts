@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AchievmentComponent } from './achievment.component';
+import { LoggedoutComponent } from './loggedout.component';
 
-describe('AchievmentComponent', () => {
-  let component: AchievmentComponent;
-  let fixture: ComponentFixture<AchievmentComponent>;
+describe('LoggedoutComponent', () => {
+  let component: LoggedoutComponent;
+  let fixture: ComponentFixture<LoggedoutComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AchievmentComponent ]
+      declarations: [ LoggedoutComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AchievmentComponent);
+    fixture = TestBed.createComponent(LoggedoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

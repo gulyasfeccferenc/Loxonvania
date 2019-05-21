@@ -1,22 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes} from '@angular/router';
-
+import { provideIntranetTokenInterceptor } from './auth/token.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './common/header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WorkplaceComponent } from './workplace/workplace.component';
 import { AchievmentsComponent } from './achievments/achievments.component';
-import { AchievmentComponent } from './models/achievment/achievment.component';
-import { LevelComponent } from './models/level/level.component';
 import { WidgetComponent } from './widget/widget.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import {FormsModule} from '@angular/forms';
-import {AuthService} from './auth/auth.service';
+import {AuthenticationService} from './auth/authentication.service';
 import {AuthGuardService} from './auth/auth-guard.service';
 import { HttpClientModule } from '@angular/common/http';
+import {LoggedoutComponent} from './auth/loggedout/loggedout.component';
+
 
 const appRoutes: Routes = [
   // {
@@ -32,7 +32,7 @@ const appRoutes: Routes = [
   },
   { path: 'achievments',
     component: AchievmentsComponent
-  },
+  }
   // { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -43,11 +43,10 @@ const appRoutes: Routes = [
     DashboardComponent,
     WorkplaceComponent,
     AchievmentsComponent,
-    AchievmentComponent,
-    LevelComponent,
     WidgetComponent,
     SignupComponent,
-    SigninComponent
+    SigninComponent,
+    LoggedoutComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +55,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthenticationService, AuthGuardService, provideIntranetTokenInterceptor()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
