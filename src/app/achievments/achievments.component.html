@@ -13,8 +13,8 @@
 <!--      </div>-->
       <h3>{{ level.name }}<span class="badge badge-info">{{level.rank}}</span></h3>
     </div>
-    <div class="col-sm-3 mb-5" *ngFor="let unit of level.achievments">
-      <div class="card achievment">
+    <div class="col-sm-3 mb-5" *ngFor="let unit of level.achievments | achievmentpipe ">
+      <div [hidden]="!unit.visible" class="card achievment {{ !unit.owned ? '' : 'available' }}">
         <div class="card-body">
           <h5 class="card-title">{{ unit.name }}</h5>
           <p class="card-text">{{ unit.desc }}</p>

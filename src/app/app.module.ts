@@ -16,6 +16,7 @@ import {AuthenticationService} from './auth/authentication.service';
 import {AuthGuardService} from './auth/auth-guard.service';
 import { HttpClientModule } from '@angular/common/http';
 import {LoggedoutComponent} from './auth/loggedout/loggedout.component';
+import {AchievmentPipe} from './achievments/achievment.pipe';
 
 
 const appRoutes: Routes = [
@@ -46,7 +47,8 @@ const appRoutes: Routes = [
     WidgetComponent,
     SignupComponent,
     SigninComponent,
-    LoggedoutComponent
+    LoggedoutComponent,
+    AchievmentPipe
   ],
   imports: [
     BrowserModule,

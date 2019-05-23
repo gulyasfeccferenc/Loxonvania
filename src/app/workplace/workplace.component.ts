@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UnitService} from '../unit.service';
 import {WorkerModel} from '../models/worker/worker.model';
 import {Subscription} from 'rxjs';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-workplace',
@@ -15,13 +16,23 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
 
   constructor(private unitService: UnitService) {
     unitService.getUnits();
-    this.unitsSubscription = this.unitService.getUnitsUpdatedListener()
-      .subscribe((units: WorkerModel[]) => {
-        this.units = units;
-      });
   }
 
   ngOnInit() {
+    this.unitsSubscription = this.unitService.getUnitsUpdatedListener()
+      .subscribe((units: WorkerModel[]) => {
+        console.log('Ezek az elemeim: ', units);
+        this.units = units;
+      }, (anyz) => {
+        console.error(anyz);
+      }, () => {
+        console.error('Off');
+      });
+
+    const source = timer(1000, 1000);
+    const subscribe = source.subscribe(val => {
+      console.error(this.unitsSubscription);
+    });
   }
 
   ngOnDestroy() {

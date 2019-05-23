@@ -4,5 +4,6 @@ export interface Achievment {
   desc: string;
   level: number;
   visible: boolean;
+  owned: boolean;
   options: string;
 }

@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-      Loxonvania
+      Loxon Idle
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="nav navbar-nav" *ngIf="authService.isAuthenticated()">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard <span class="sr-only">(current)</span></a>
+          <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/workplace" routerLinkActive="active">Workplace</a>
@@ -22,16 +22,19 @@
       </ul>
       <ul class="nav navbar-nav ml-auto" *ngIf="authService.isAuthenticated()">
         <li class="nav-item">
-          <a class="nav-link" style="cursor: pointer" (click)="logoutUser()"><span class="fal fa-bezier-curve"></span>Logout</a>
+          <span class="nav-link" ><i class="fas fa-person-booth"></i> {{ authService.getLoggedInUserName() }}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="cursor: pointer" (click)="logoutUser()"><i class="fas fa-sign-out-alt"></i>Logout</a>
         </li>
       </ul>
 
       <ul class="nav navbar-nav ml-auto" *ngIf="!authService.isAuthenticated()">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/signup" routerLinkActive="active">Sign up</a>
+          <a class="nav-link" routerLink="/signup" routerLinkActive="active"><i class="fas fa-user-plus"></i> Sign up</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/signin" routerLinkActive="active">Sign in</a>
+          <a class="nav-link" routerLink="/signin" routerLinkActive="active"><i class="fas fa-sign-in-alt"></i> Sign in</a>
         </li>
       </ul>
     </div>
