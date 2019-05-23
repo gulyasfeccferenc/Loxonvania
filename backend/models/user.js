@@ -1,15 +1,18 @@
 /** Model to keep our User data in one place */
 const mongoose = require('mongoose');
 const Worker = require('./worker');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const unitSchema = mongoose.Schema({
   name: {
     type: String,
-    require: true
+    require: true,
+    unique: true
   },
   company: {
     type: String,
-    require: true
+    require: true,
+    unique: true
   },
   point: {
     type: Number,
@@ -25,5 +28,7 @@ const unitSchema = mongoose.Schema({
   }
 
 });
+
+unitSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('User', unitSchema);

@@ -19,7 +19,12 @@ const unitSchema = mongoose.Schema({
     default: 0
   },
   type: Number,
-  produce: Number
+  produce: Number,
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    require: true
+  }
 });
 
 module.exports = mongoose.model('Unit', unitSchema);

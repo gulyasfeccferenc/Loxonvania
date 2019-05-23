@@ -23,18 +23,6 @@ export class AuthService {
     window.location.href = this.serverPrefix + '?redirect=' + encodeURIComponent(redirectUrl) + '&appname=' + encodeURIComponent(myAppName);
   }
 
-  public register(username: string, password: string, companyName: string) {
-    this.authenticate(username, password).subscribe(() => {}, () => {}, () => {
-      const registration: User = {name: username, company: companyName, level: [], points: 0 };
-      console.log(registration);
-      this.httpClient
-        .post<{message: string}>('http://localhost:3000/api/auth/register', registration)
-        .subscribe(postData => {
-           console.log(postData);
-      });
-    });
-  }
-
   public authenticate(username: string, password: string): Observable<boolean> {
     return new Observable((observer) => {
       this.httpClient.post<AuthResponse>(this.serverPrefix + '/oauth/token', this.createAuthenticationRequest(username, password))
@@ -43,7 +31,6 @@ export class AuthService {
           this.tokenService.setAuthData(data);
           this.router.navigateByUrl('/workplace');
           observer.next(true);
-
           observer.complete();
         },
         (error) => {

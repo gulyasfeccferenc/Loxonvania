@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyparser = require('body-parser');
+const bodyParser = require('body-parser');
 /**********************************/
 let usr = 'adminUser';
 let pw = 'szuperjelszo';
@@ -8,6 +8,10 @@ let pw = 'szuperjelszo';
 const User = require('./models/user');//mongoose.model('user', {name: String});
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 // console.log(Users.collection.get(1));
 mongoose.connect('mongodb+srv://'+usr+':'+pw+'@cluster0-6eruh.gcp.mongodb.net/test?retryWrites=true')
@@ -16,8 +20,6 @@ mongoose.connect('mongodb+srv://'+usr+':'+pw+'@cluster0-6eruh.gcp.mongodb.net/te
   })
   .catch((e) => console.log("An error occured: "+e));
 
-app.use(bodyparser.json);
-app.use(bodyparser.urlencoded({extended: false}));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,19 +35,51 @@ app.use((req, res, next) => {
 
 // app.post('/api/auth/register', () => {});
 
-app.post('/api/auth/register',
+
+
+app.post('/api/register',
   (req, res, next) => {
+    console.log(req.body);
     const newUser = new User({
-      name: req.body.name,
-      company: req.body.company,
+      name: (req != null && req.body != null && req.body.name != null) ? req.body.name : null,
+      company: (req != null && req.body != null && req.body.company != null) ? req.body.company : null,
       point: 0,
       avatar: '',
       level: 0
     });
     console.log(newUser);
-    res.status(201).json({
-      message: 'Company created!'
-    });
+    if (newUser.company == null || newUser.name == null) {
+      res.status(202).json({
+        message: 'Not your arany micikéd'
+      });
+    } else {
+      newUser.save().then(result => {
+        res.status(201).json({
+          message: 'Company created!',
+          result: result
+        });
+      }).catch(error => {
+        res.status(500).json({
+          message: 'Company couldn\'t be created!',
+          error: error
+        });
+      });
+    }
+});
+
+app.post('/login', (req, res, next) => {
+  User.findOne( {
+    email: req.body.email //TODO: Check for company not null
+  }).then(user => {
+    if (!user) {
+      return res.status(401).json({
+        message: 'Authentication failed!'
+      });
+    }
+
+  }, error => {
+
+  });
 });
 
 //Handling units here
