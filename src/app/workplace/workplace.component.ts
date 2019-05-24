@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UnitService} from '../unit.service';
 import {WorkerModel} from '../models/worker/worker.model';
 import {Subscription} from 'rxjs';
-import { timer } from 'rxjs';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-workplace',
@@ -14,29 +14,29 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
   units: WorkerModel[] = [];
   private unitsSubscription: Subscription;
 
-  constructor(private unitService: UnitService) {
+  constructor(private unitService: UnitService, private userService: UserService) {
     unitService.getUnits();
+    this.unitsSubscription = this.unitService.getUnitsUpdatedListener()
+      .subscribe((units: WorkerModel[]) => {
+        this.units = units;
+      });
   }
 
   ngOnInit() {
-    this.unitsSubscription = this.unitService.getUnitsUpdatedListener()
-      .subscribe((units: WorkerModel[]) => {
-        console.log('Ezek az elemeim: ', units);
-        this.units = units;
-      }, (anyz) => {
-        console.error(anyz);
-      }, () => {
-        console.error('Off');
-      });
-
-    const source = timer(1000, 1000);
-    const subscribe = source.subscribe(val => {
-      console.error(this.unitsSubscription);
-    });
+    // const element = document.getElementById('app-workplace-omniscroll');
+    // const vat = Scrollbar.init(element, {}); //TODO: Add smooth scrolling after everything else finished
   }
 
   ngOnDestroy() {
     this.unitsSubscription.unsubscribe();
+  }
+
+  getNewUnit() {
+    this.unitService.generateUnit();
+  }
+
+  newUnitAvailable() {
+    return this.userService.getUserData().points > 1050;
   }
 
 }

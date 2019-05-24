@@ -83,20 +83,10 @@ app.post('/login', (req, res, next) => {
 });
 
 //Handling units here
-app.use('/api/units',
+app.use('/api/units/list',
   (req, res, next) => {
     const units = [
-      {name: 'Milán', produce: 10},
-      {name: 'Milcsi', produce: 100},
-      {name: 'Milcsi', produce: 100},
-      {name: 'Milcsi', produce: 100},
-      {name: 'Milcsi', produce: 100},
-      {name: 'Milcsi', produce: 100},
-      {name: 'Milos', produce: 250},
-      {name: 'Milos', produce: 250},
-      {name: 'Milos', produce: 250},
-      {name: 'Milos', produce: 250},
-      {name: 'Oidipus Milos', produce: 1000}
+      {name: 'Milán', produce: 10, active: true}
     ];
     res.status(200).json({
       message: 'Wow, this is done!',
@@ -104,6 +94,29 @@ app.use('/api/units',
     });
   }
 );
+
+/**
+ * Use this to generate a new unit with random name, avatar, producing value, etc
+ * Would be nice if it could have incoming parameters to seed the generation
+ */
+app.use('/api/units/generate',
+  (req, res, next) => {
+    const generatedUnit = {
+      name: 'Józsi',
+      sprite: '',
+      description: 'A legjobb munkaerő',
+      joined: new Date(),
+      active: true,
+      level: 0,
+      type: 2,
+      produce: 2
+      //owner: currentUser
+    };
+  res.status(200).json({
+    message: 'Behold your new unit!',
+    unit: generatedUnit
+  });
+});
 
 //Handling achievments here
 app.use('/api/achievments',

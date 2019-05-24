@@ -1,37 +1,42 @@
 import {WorkerModel} from './models/worker/worker.model';
 import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs';
-import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, Subject, timer} from 'rxjs';
+import {ChangeDetectorRef, Injectable} from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class UnitService {
+
   private units: WorkerModel[] = [];
   private currentProduction = 0;
   private unitsUpdated = new Subject<WorkerModel[]>();
 
+
+
   constructor(private httpClient: HttpClient) {
     this.getUnits();
-    this.getAllUnitPoint();
+    // this.getAllUnitPoint();
+    // const source = timer(1000, 1000);
+    // source.subscribe(val => {
+    //   console.log(this.getAllUnitPoint());
+    //   this.userService.addPoint(this.getAllUnitPoint());
+    // });
+
   }
 
-  addUnit(name: string, produce: number) {
-    // this.units.push({name, produce});
+  addUnit(worker: WorkerModel) {
+    this.units.push(worker);
+    // console.warn("Unite added:");
+    // console.warn(this.units);
   }
 
   generateUnit() {
-    const newUnit: WorkerModel = {
-      active: true,
-      description: 'Strongest new BC of the Universe',
-      id: 'lol01',
-      joined: null,
-      level: 5,
-      name: 'Géza',
-      produce: 3,
-      sprite: '',
-      type: 1
-    };
-    this.units.push(newUnit);
-    this.callUnitsUpdated();
+    this.httpClient
+      .get<{message: string, unit: WorkerModel}>('http://localhost:3000/api/units/generate')
+      .subscribe(
+        postData => {
+          this.addUnit(postData.unit);
+          this.callUnitsUpdated();
+        });
   }
 
   /**
@@ -39,7 +44,7 @@ export class UnitService {
    */
   getUnits() {
     this.httpClient
-      .get<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units')
+      .get<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list')
       .subscribe(
         postData => {
           this.units = postData.units;
@@ -48,8 +53,9 @@ export class UnitService {
   }
 
   callUnitsUpdated() {
-    // console.error(this.unitsUpdated);
+    // Itt még jó érték van a this.units.slice-ben a frissített értékekkel
     this.unitsUpdated.next(this.units.slice());
+    // this.cd.markForCheck();
   }
 
   /**
@@ -57,12 +63,14 @@ export class UnitService {
    */
   getAllUnitPoint() {
     this.currentProduction = 0;
-    this.units.forEach( v => {
+    this.getUnitList().forEach( v => {
       this.currentProduction += v.produce;
     });
-    console.warn('UNITOKAT GENERÁLOK');
-    this.generateUnit();
     return this.currentProduction;
+  }
+
+  getUnitList() {
+    return this.units.slice();
   }
 
   getUnitsUpdatedListener() {
