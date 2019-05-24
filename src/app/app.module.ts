@@ -19,7 +19,6 @@ import {LoggedoutComponent} from './auth/loggedout/loggedout.component';
 import {AchievmentPipe} from './achievments/achievment.pipe';
 import {NumberformatPipe} from './widget/numberformat.pipe';
 
-
 const appRoutes: Routes = [
   // {
   //   path: 'heroes',

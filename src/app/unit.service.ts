@@ -2,31 +2,39 @@ import {WorkerModel} from './models/worker/worker.model';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subject, timer} from 'rxjs';
 import {ChangeDetectorRef, Injectable} from '@angular/core';
+import {SharedService} from './shared.service';
 
 @Injectable({ providedIn: 'root' })
 export class UnitService {
 
   private units: WorkerModel[] = [];
-  private currentProduction = 0;
-  private unitsUpdated = new Subject<WorkerModel[]>();
+  currentProduction = 0;
+  currentProductionVar: Subject<number>;
+  currentProduction$ = new BehaviorSubject<number>(this.currentProduction);
+  private unitsUpdated = new BehaviorSubject<WorkerModel[]>(this.units);
+  private broadcastProduction: Observable<number>;
 
-
-
-  constructor(private httpClient: HttpClient) {
-    this.getUnits();
-    // this.getAllUnitPoint();
-    // const source = timer(1000, 1000);
-    // source.subscribe(val => {
-    //   console.log(this.getAllUnitPoint());
-    //   this.userService.addPoint(this.getAllUnitPoint());
-    // });
-
+  getUnitsUpdatedValue() {
+    this.unitsUpdated.getValue();
   }
+
+  getProductionBroadcast() {
+    return this.currentProduction$.asObservable();
+  }
+
+  constructor(private httpClient: HttpClient, private shared: SharedService) {
+    this.getUnits();
+    this.currentProductionVar = this.shared._produceValue;
+  }
+
+  // getCurrentProduction() {
+  //   this.currentProduction$.next(this.currentProduction);
+  //   console.log(this.currentProduction$.getValue());
+  //   return this.currentProduction$.getValue();
+  // }
 
   addUnit(worker: WorkerModel) {
     this.units.push(worker);
-    // console.warn("Unite added:");
-    // console.warn(this.units);
   }
 
   generateUnit() {
@@ -35,7 +43,9 @@ export class UnitService {
       .subscribe(
         postData => {
           this.addUnit(postData.unit);
-          this.callUnitsUpdated();
+          this.currentProduction += postData.unit.produce;
+          this.shared.changeProduceValue(this.currentProduction);
+          this.unitsUpdated.next(this.units.slice());
         });
   }
 
@@ -48,24 +58,19 @@ export class UnitService {
       .subscribe(
         postData => {
           this.units = postData.units;
-          this.callUnitsUpdated();
+          this.currentProduction = this.calcAllUnitPoint(postData.units);
+          this.shared.changeProduceValue(this.currentProduction);
+          this.unitsUpdated.next(this.units.slice());
         });
   }
 
-  callUnitsUpdated() {
-    // Itt még jó érték van a this.units.slice-ben a frissített értékekkel
-    this.unitsUpdated.next(this.units.slice());
-    // this.cd.markForCheck();
-  }
 
-  /**
-   * On every try it will iterate though all available unit and sum their current production value.
-   */
-  getAllUnitPoint() {
+  calcAllUnitPoint(units: WorkerModel[]) {
     this.currentProduction = 0;
-    this.getUnitList().forEach( v => {
+    units.forEach( v => {
       this.currentProduction += v.produce;
     });
+    console.warn("FECC2", this.currentProduction);
     return this.currentProduction;
   }
 

@@ -1,11 +1,9 @@
-import {ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
 import {Observable, Subject, Subscription, timer} from 'rxjs';
 import {UnitService} from '../unit.service';
-import {subscribeOn} from 'rxjs/operators';
 import {User} from '../models/auth/user.model';
-import {WorkerModel} from '../models/worker/worker.model';
-import {WidgetService} from './widget.service';
+import {SharedService} from '../shared.service';
 
 @Component({
   selector: 'app-widget',
@@ -17,14 +15,22 @@ export class WidgetComponent implements OnInit, OnDestroy {
   private produce = 0;
   everySecond: Observable<number> = timer(0, 1000);
   private subscription: Subscription;
-  private unitSubscription: Subscription;
   private pointSubscription;
+  private produceSubscription: Subject<number>;
 
-  constructor(private userService: UserService, private unitService: UnitService, private widgetService: WidgetService ) {
+  constructor(private userService: UserService, private unitService: UnitService, private shared: SharedService) {
+    // This timer will trigger point/xp recalculation on each tick
     this.subscription = this.everySecond.subscribe((seconds) => {
       if (seconds > 0) {
-        this.callServices(seconds);
+        this.userService.recalculatePoint();
       }
+    });
+
+    // Subscribe for the shared variable containing current production
+    this.produceSubscription = this.shared.produceValue;
+    this.produceSubscription.subscribe( value => {
+      this.produce = value;
+      this.userService.setProduction(this.produce);
     });
   }
 
@@ -34,23 +40,10 @@ export class WidgetComponent implements OnInit, OnDestroy {
       .subscribe((user: User) => {
         this.points = user.points;
       });
-    this.unitSubscription = this.unitService
-      .getUnitsUpdatedListener()
-      .subscribe((units: any) => {
-        // console.warn('Az egységek végre:');
-        console.warn(units);
-      });
-  }
-
-  callServices(seconds) {
-    let i = this.widgetService.getProduceValue();
-    this.userService.addPoint(this.produce);
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.pointSubscription.unsubscribe();
-    this.unitSubscription.unsubscribe();
   }
-
 }
