@@ -3,7 +3,7 @@
     <div class="row">
       <br>
       <div class="col-sm-3 mb-3" *ngFor="let unit of units">
-        <div class="card {{(unit.active == null || !unit.active) ? 'disabled' : ''}}">
+        <div class="card {{(unit.active == null || !unit.active) ? 'disabled' : ''}}" ngbPopover="{{ unit.description }}" popoverTitle="Popover on top">
           <div class="unit-level">
             <span>3{{unit.level}}</span>
           </div>
@@ -11,7 +11,7 @@
           <div class="card-body">
             <h5 class="card-title">{{ unit.name }}</h5>
             <p class="card-text">{{ unit.produce }}</p>
-            <a href="#" class="btn btn-sm btn-info"><i class="fas fa-angle-double-up"></i></a>
+            <button class="btn btn-sm btn-info"><i class="fas fa-angle-double-up"></i></button>
             <a href="#" class="btn btn-sm btn-danger"><i class="far fa-calendar-times"></i></a>
           </div>
         </div>

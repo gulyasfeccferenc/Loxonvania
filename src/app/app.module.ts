@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {LoggedoutComponent} from './auth/loggedout/loggedout.component';
 import {AchievmentPipe} from './achievments/achievment.pipe';
 import {NumberformatPipe} from './widget/numberformat.pipe';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   // {
@@ -56,7 +57,8 @@ const appRoutes: Routes = [
     AppRoutingModule,
     RouterModule.forRoot(appRoutes, {enableTracing: true}),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule.forRoot()
   ],
   providers: [AuthenticationService, AuthGuardService, provideIntranetTokenInterceptor()],
   bootstrap: [AppComponent]

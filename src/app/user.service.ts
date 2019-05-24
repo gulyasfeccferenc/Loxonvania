@@ -10,6 +10,7 @@ export class UserService {
   private user: User = {
     name: 'Fecc',
     points: 1000,
+    xp: 30,
     company: 'Loxonvania',
     level: []
   };
