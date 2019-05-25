@@ -4,6 +4,6 @@ export interface User {
   name: string;
   company: string;
   points: number;
-  xp: 30;
+  xp: number;
   level: Level[];
 }

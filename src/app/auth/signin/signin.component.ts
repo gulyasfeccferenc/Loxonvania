@@ -16,6 +16,7 @@ export class SigninComponent implements OnInit {
   }
 
   onSignIn(form: NgForm) {
+    console.log('login');
     const email = form.value.email;
     const password = form.value.password;
     this.authService.authenticate(email, password).subscribe((e) => {
@@ -23,7 +24,7 @@ export class SigninComponent implements OnInit {
       console.log(this.tokenService.getUserName());
       console.log(this.tokenService.getEverything());
     }, (e) => {
-      console.log('Error:', e);
+      console.log('Signin error:', e);
     });
   }
 }

@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit {
     const email = form.value.email;
     const password = form.value.password;
     const companyName = form.value.company;
-    const registration: User = {name: email, company: companyName, level: [], points: 0 };
+    const registration: User = {name: email, company: companyName, level: [], points: 0, xp: 30 };
     this.authService.authenticate(email, password).subscribe(() => {
       console.log(registration);
       this.httpClient
@@ -30,6 +30,9 @@ export class SignupComponent implements OnInit {
           console.log(postData);
         });
       console.log('Message sent?');
+    },
+    e => {
+      console.log('Registration error:', e);
     });
   }
 
