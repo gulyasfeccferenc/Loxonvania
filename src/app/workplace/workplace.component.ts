@@ -3,7 +3,7 @@ import {UnitService} from '../unit.service';
 import {WorkerModel} from '../models/worker/worker.model';
 import {Subscription} from 'rxjs';
 import {UserService} from '../user.service';
-import {ModalDismissReasons, NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModalContentComponent} from '../common/modal-content/modal-content.component';
 
 @Component({
@@ -61,11 +61,13 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.content = this.excuses[rand].content;
     modalRef.componentInstance.button = 'Nem érdekel, kirúgom!';
     modalRef.result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
-      console.error('Closed with ', result);
+      if (result != null && result === 1) {
+        this.unitService.fireUnit(unit);
+      }
     }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      console.error('Closed with ', reason);
+      if (reason != null && reason === 1) {
+        this.unitService.fireUnit(unit);
+      }
     });
   }
 

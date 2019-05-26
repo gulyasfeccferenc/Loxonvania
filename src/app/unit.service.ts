@@ -89,4 +89,16 @@ export class UnitService {
       this.unitsUpdated.next(this.units);
     }
   }
+
+  fireUnit(unit: WorkerModel) {
+    // Remove production value
+    this.currentProduction -= unit.produce;
+    this.shared.changeProduceValue(this.currentProduction);
+
+    // Delete on the frontend, then send request to backend
+    this.units.splice(this.units.indexOf(unit), 1);
+
+    // TODO: Backend destroy
+    this.unitsUpdated.next(this.units.slice());
+  }
 }
