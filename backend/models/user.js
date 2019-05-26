@@ -25,6 +25,10 @@ const unitSchema = mongoose.Schema({
   level: {
     type: Number,
     default: 0
+  },
+  xp: {
+    type: Number,
+    default: 0
   }
 
 });

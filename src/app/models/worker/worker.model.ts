@@ -8,4 +8,5 @@ export interface WorkerModel {
   level: number;
   type: number;
   produce: number;
+  xp: number;
 }

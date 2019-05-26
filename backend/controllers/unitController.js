@@ -2,7 +2,18 @@ module.exports = {
 
   list: (req, res) => {
     const units = [
-      {name: 'Milán', produce: 10, active: true}
+      {
+        name: 'Steve Jobs',
+        sprite: '',
+        description: 'Elsőszámú fejlesztő',
+        joined: new Date(),
+        active: true,
+        level: 0,
+        type: 1,
+        produce: 10,
+        xp: 1
+        //owner: currentUser
+      }
     ];
     res.status(200).json({
       message: 'Wow, this is done!',
@@ -19,7 +30,8 @@ module.exports = {
       active: true,
       level: 0,
       type: 2,
-      produce: 2
+      produce: 2,
+      xp: 10
       //owner: currentUser
     };
     res.status(200).json({

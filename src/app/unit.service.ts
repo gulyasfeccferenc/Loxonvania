@@ -64,13 +64,11 @@ export class UnitService {
         });
   }
 
-
   calcAllUnitPoint(units: WorkerModel[]) {
     this.currentProduction = 0;
     units.forEach( v => {
       this.currentProduction += v.produce;
     });
-    console.warn("FECC2", this.currentProduction);
     return this.currentProduction;
   }
 
@@ -86,6 +84,7 @@ export class UnitService {
     const nr = this.units.indexOf(unit);
     if (nr != null && nr > 0) {
       this.units[nr].level++;
+      // TODO: Backend update
       this.unitsUpdated.next(this.units);
     }
   }
