@@ -13,7 +13,7 @@ import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 })
 export class SignupComponent implements OnInit {
   company = 'my company';
-  alerts: NgbAlert[] = [];
+  alerts = [];
 
   constructor(private authService: AuthService, private httpClient: HttpClient, private router: Router) {}
 
@@ -69,7 +69,7 @@ export class SignupComponent implements OnInit {
     } else if (msg.includes('company')) {
       document.getElementById('company').classList.add('is-invalid');
     }
-    // this.alerts.push({type: 'danger', message: msg});
+    this.alerts.push({type: 'danger', message: msg});
   }
 
   clearAuthError() {

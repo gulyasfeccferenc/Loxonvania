@@ -11,7 +11,7 @@ import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./signin.component.sass']
 })
 export class SigninComponent implements OnInit {
-  alerts: NgbAlert[] = [];
+  alerts = [];
 
   constructor(private authService: AuthService, private tokenService: TokenService, private router: Router) { }
 
@@ -43,7 +43,7 @@ export class SigninComponent implements OnInit {
       document.getElementById('email').classList.add('is-invalid');
       document.getElementById('password').classList.add('is-invalid');
     }
-    // this.alerts.push({type: 'danger', message: msg});
+    this.alerts.push({type: 'danger', message: msg});
   }
 
   clearAuthError() {

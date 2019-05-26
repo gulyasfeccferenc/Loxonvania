@@ -1,28 +1,12 @@
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Józsi könyörög!</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p id="firing-modal-content">
-      "De hiszen nekem családom van, nem rúghatsz ki csak úgy!" - Józsi
-    </p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Nem érdekel, kirúgom!</button>
-  </div>
-</ng-template>
 <div class="container text-center p-2 mt-5">
   <div class="row">
     <br>
     <div class="col-sm-3 mb-3" *ngFor="let unit of units">
-      <div class="card {{(unit.active == null || !unit.active) ? 'disabled' : ''}}" ngbPopover="{{ unit.description }}. Csatlakozott: {{ unit.joined | date }}" popoverTitle="{{ unit.name }}">
+      <div class="card {{(unit.active == null || !unit.active) ? 'disabled' : ''}}">
         <div class="unit-level">
           <span>{{unit.level}}</span>
         </div>
-        <div class="card-image">
+        <div class="card-image" ngbPopover="{{ unit.description }}. Csatlakozott: {{ unit.joined | date }}" popoverTitle="{{ unit.name }}">
           <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--dWwH4rJ4--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://media2.giphy.com/media/fnD9cHHIrYRYk/giphy.gif" class="card-img-top" alt="...">
         </div>
         <div class="card-body">
