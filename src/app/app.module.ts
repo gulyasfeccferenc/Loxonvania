@@ -19,6 +19,7 @@ import {LoggedoutComponent} from './auth/loggedout/loggedout.component';
 import {AchievmentPipe} from './achievments/achievment.pipe';
 import {NumberformatPipe} from './widget/numberformat.pipe';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ModalContentComponent } from './common/modal-content/modal-content.component';
 
 const appRoutes: Routes = [
   // {
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     SigninComponent,
     LoggedoutComponent,
     AchievmentPipe,
-    NumberformatPipe
+    NumberformatPipe,
+    ModalContentComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +63,7 @@ const appRoutes: Routes = [
     NgbModule.forRoot()
   ],
   providers: [AuthenticationService, AuthGuardService, provideIntranetTokenInterceptor()],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ModalContentComponent]
 })
 export class AppModule { }

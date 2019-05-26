@@ -1,30 +1,47 @@
-<div id="app-workplace-omniscroll">
-  <div class="container text-center p-2 mt-5">
-    <div class="row">
-      <br>
-      <div class="col-sm-3 mb-3" *ngFor="let unit of units">
-        <div class="card {{(unit.active == null || !unit.active) ? 'disabled' : ''}}" ngbPopover="{{ unit.description }}" popoverTitle="Popover on top">
-          <div class="unit-level">
-            <span>3{{unit.level}}</span>
-          </div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Józsi könyörög!</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p id="firing-modal-content">
+      "De hiszen nekem családom van, nem rúghatsz ki csak úgy!" - Józsi
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Nem érdekel, kirúgom!</button>
+  </div>
+</ng-template>
+<div class="container text-center p-2 mt-5">
+  <div class="row">
+    <br>
+    <div class="col-sm-3 mb-3" *ngFor="let unit of units">
+      <div class="card {{(unit.active == null || !unit.active) ? 'disabled' : ''}}" ngbPopover="{{ unit.description }}. Csatlakozott: {{ unit.joined | date }}" popoverTitle="{{ unit.name }}">
+        <div class="unit-level">
+          <span>{{unit.level}}</span>
+        </div>
+        <div class="card-image">
           <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--dWwH4rJ4--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://media2.giphy.com/media/fnD9cHHIrYRYk/giphy.gif" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ unit.name }}</h5>
-            <p class="card-text">{{ unit.produce }}</p>
-            <button class="btn btn-sm btn-info"><i class="fas fa-angle-double-up"></i></button>
-            <a href="#" class="btn btn-sm btn-danger"><i class="far fa-calendar-times"></i></a>
-          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ unit.name }}</h5>
+          <p class="card-text">{{ unit.produce }}</p>
+          <button class="btn btn-sm btn-info mr-1" (click)="this.unitService.liftUnitLevel(unit)"><i class="fas fa-arrow-circle-up"></i></button>
+          <button class="btn btn-sm btn-danger" (click)="open(unit)"><i class="fas fa-user-times"></i></button>
         </div>
       </div>
-      <div class="col-sm-3 mb-3" *ngIf="newUnitAvailable()">
-        <div class="card card-new-unit" (click)="getNewUnit()">
-          <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--dWwH4rJ4--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://media2.giphy.com/media/fnD9cHHIrYRYk/giphy.gif" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">ÚJ EGYSÉG</h5>
-            <p class="card-text">+300</p>
-            <a href="#" class="btn btn-sm btn-info"><i class="fas fa-angle-double-up"></i></a>
-            <a href="#" class="btn btn-sm btn-danger"><i class="far fa-calendar-times"></i></a>
-          </div>
+    </div>
+    <div class="col-sm-3 mb-3" *ngIf="newUnitAvailable()">
+      <div class="card card-new-unit">
+        <div class="card-image">
+          <img src="https://pics.me.me/whos-that-pokemon-3323317.png" class="card-img-top" alt="...">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">ÚJ EGYSÉG</h5>
+          <p class="card-text">+300</p>
+          <button class="btn btn-sm btn-info" (click)="getNewUnit()" title="A gomb megnyomásával felveszed az adott egységet a cégedhez!"><i class="fas fa-user-plus"></i></button>
         </div>
       </div>
     </div>

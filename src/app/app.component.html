@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-header></app-header>
 <router-outlet></router-outlet>
-<app-widget></app-widget>
+<app-widget *ngIf="this.authService.isAuthenticated()"></app-widget>
 <!--<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">-->
 <!--  <div class="toast-header">-->
 <!--    <img src="..." class="rounded mr-2" alt="...">-->

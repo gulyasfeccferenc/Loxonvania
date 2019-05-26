@@ -81,4 +81,12 @@ export class UnitService {
   getUnitsUpdatedListener() {
     return this.unitsUpdated.asObservable();
   }
+
+  liftUnitLevel(unit: WorkerModel) {
+    const nr = this.units.indexOf(unit);
+    if (nr != null && nr > 0) {
+      this.units[nr].level++;
+      this.unitsUpdated.next(this.units);
+    }
+  }
 }
