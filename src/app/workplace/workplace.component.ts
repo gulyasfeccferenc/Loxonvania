@@ -29,23 +29,44 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
       .subscribe((units: WorkerModel[]) => {
         this.units = units;
       });
+    console.warn('constructor');
   }
 
   ngOnInit() {
     // const element = document.getElementById('app-workplace-omniscroll');
     // const vat = Scrollbar.init(element, {}); //TODO: Add smooth scrolling after everything else finished
+    console.warn('ng on init');
   }
 
   ngOnDestroy() {
+    //TODO: Put every unit related sync here!!!
     this.unitsSubscription.unsubscribe();
   }
 
-  getNewUnit() {
+  getNewUnit(price: number) {
     this.unitService.generateUnit();
+    this.userService.spendPoints(price);
   }
 
   newUnitAvailable() { //TODO: Proper calculation need to be added here
-    return this.userService.getUserData().points > 1050;
+    return this.userService.getUserData().points > this.newUnitPrice();
+  }
+
+  unitLevelupAvailable(unit: WorkerModel) {
+    return unit.level <= 5 && this.userService.getUserData().points > this.getLevelUpValue(unit);
+  }
+
+  newUnitPrice() {
+    return 500; // TODO: Calculation of the price based on level
+  }
+
+  getLevelUpValue(unit: WorkerModel) {
+    return unit.level * 250 + 250;
+  }
+
+  liftUnitLevel(unit: WorkerModel, price: number) {
+    this.unitService.liftUnitLevel(unit);
+    this.userService.spendPoints(price);
   }
 
   // HANDLING MODAL

@@ -2,9 +2,11 @@
   <p>
     <img src="https://cdn3.iconfinder.com/data/icons/avatars-9/145/Avatar_Robot-512.png" alt="robot avatar" class="rounded-circle" width="50px" style="vertical-align: text-top">
     <span class="badge badge-info" style="vertical-align: super; margin-left: -12px;">{{ userService.getUserData().level.length }}</span>
-    <strong style="vertical-align: bottom;">{{ points | numberformat }}</strong>
+    <strong style="vertical-align: bottom; cursor: default;" title="{{ points }}">{{ points | numberformat }} $</strong>
   </p>
   <div class="progress">
-    <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" style="width:{{ userService.getCalculatedWidth() }}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">{{ points }}pt</div>
+    <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar"
+         [style.width]="userService.getCalculatedWidth() + '%'"
+         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{ xp }}</div>
   </div>
 </div>

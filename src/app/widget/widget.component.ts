@@ -11,12 +11,15 @@ import {SharedService} from '../shared.service';
   styleUrls: ['./widget.component.sass']
 })
 export class WidgetComponent implements OnInit, OnDestroy {
-  private points = 0;
-  private produce = 0;
+  private points = 0; // To keep track current point of the User
+  private produce = 0; // Point production of every minute
+  private xp = 0; // User's sum of experience
+  private xpProduction = 0; // XP production of every minute
   everySecond: Observable<number> = timer(0, 1000);
   private subscription: Subscription;
   private pointSubscription;
   private produceSubscription: Subject<number>;
+  private xpSubscription: Subject<number>;
 
   constructor(private userService: UserService, private unitService: UnitService, private shared: SharedService) {
     // This timer will trigger point/xp recalculation on each tick
@@ -32,6 +35,12 @@ export class WidgetComponent implements OnInit, OnDestroy {
       this.produce = value;
       this.userService.setProduction(this.produce);
     });
+    // Calculating and resetting xp value in shared comp.
+    this.xpSubscription = this.shared.xpValue;
+    this.xpSubscription.subscribe( value => {
+      this.xpProduction = value;
+      this.userService.setXpProduction(this.xpProduction);
+    });
   }
 
   ngOnInit() {
@@ -39,6 +48,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
       .getUserUpdatedListener()
       .subscribe((user: User) => {
         this.points = user.points;
+        this.xp = user.xp;
       });
   }
 

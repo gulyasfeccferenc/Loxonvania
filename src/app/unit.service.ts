@@ -8,23 +8,16 @@ import {SharedService} from './shared.service';
 export class UnitService {
 
   private units: WorkerModel[] = [];
-  currentProduction = 0;
+  currentProduction = 0; // All units producing potential
   currentProductionVar: Subject<number>;
-  currentProduction$ = new BehaviorSubject<number>(this.currentProduction);
+  currentXpGathering = 0; // How many xp the units producing
+  currentXpGatheringVar: Subject<number>; // Subject to keep track of the shared variable
   private unitsUpdated = new BehaviorSubject<WorkerModel[]>(this.units);
-  private broadcastProduction: Observable<number>;
-
-  getUnitsUpdatedValue() {
-    this.unitsUpdated.getValue();
-  }
-
-  getProductionBroadcast() {
-    return this.currentProduction$.asObservable();
-  }
 
   constructor(private httpClient: HttpClient, private shared: SharedService) {
     this.getUnits();
     this.currentProductionVar = this.shared._produceValue;
+    this.currentXpGatheringVar = this.shared._xpValue;
   }
 
   // getCurrentProduction() {
@@ -43,8 +36,13 @@ export class UnitService {
       .subscribe(
         postData => {
           this.addUnit(postData.unit);
+
           this.currentProduction += postData.unit.produce;
           this.shared.changeProduceValue(this.currentProduction);
+
+          this.currentXpGathering += postData.unit.xp;
+          this.shared.changeXP(this.currentXpGathering);
+
           this.unitsUpdated.next(this.units.slice());
         });
   }
@@ -58,22 +56,22 @@ export class UnitService {
       .subscribe(
         postData => {
           this.units = postData.units;
-          this.currentProduction = this.calcAllUnitPoint(postData.units);
+
+          this.calcAllUnitPoint(postData.units);
           this.shared.changeProduceValue(this.currentProduction);
+          this.shared.changeXP(this.currentXpGathering);
+
           this.unitsUpdated.next(this.units.slice());
         });
   }
 
   calcAllUnitPoint(units: WorkerModel[]) {
     this.currentProduction = 0;
+    this.currentXpGathering = 0;
     units.forEach( v => {
       this.currentProduction += v.produce;
+      this.currentXpGathering += v.xp;
     });
-    return this.currentProduction;
-  }
-
-  getUnitList() {
-    return this.units.slice();
   }
 
   getUnitsUpdatedListener() {
@@ -82,7 +80,7 @@ export class UnitService {
 
   liftUnitLevel(unit: WorkerModel) {
     const nr = this.units.indexOf(unit);
-    if (nr != null && nr > 0) {
+    if (nr != null) {
       this.units[nr].level++;
       // TODO: Backend update
       this.unitsUpdated.next(this.units);
