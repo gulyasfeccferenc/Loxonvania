@@ -39,5 +39,22 @@ module.exports = {
       unit: generatedUnit
     });
   } // end of generate
+  ,
+  update: (req, res) => {
+    const id = req.body.id;
+    res.status(200).json(
+      {
+        message: 'Updated ' + id
+      }
+    );
+  } // end of update
+  ,
+  destroy: (req, res) => {
+    console.log(req);
+    const id = req.query.id;
+    res.status(200).json(
+      { message: 'Destroyed ' + id }
+    );
+  } // end of destroy
 
 }

@@ -12,6 +12,11 @@ module.exports = {
           message: 'Authentication failed!'
         });
       }
+      if(!user.company) {
+        return res.status(466).json({
+          message: 'Company failed!'
+        });
+      }
 
     }, error => {
 

@@ -17,10 +17,15 @@ router.route('/register').post(regCtrl.register);
 router.route('/units/list').get(unitCtrl.list); // TODO be aware of the usage of 'get' instead of 'use' from app.js
 router.route('/units/generate').get(unitCtrl.generate); // TODO be aware of the usage of'get' instead of 'use' from app.js
 
+router.route('/units/update').get(unitCtrl.update); // TODO be aware of the usage of'get' instead of 'use' from app.js
+router.route('/units/destroy').get(unitCtrl.destroy); // TODO be aware of the usage of'get' instead of 'use' from app.js
+
+
 // achievements
 router.route('/achievments').get(achievementCtrl.achievements); // TODO typo: e is missing from everywhere, like lxn qka style:D
 
 // playground
 router.route('/playground').get(playgroundCtrl.play);
+router.route('/playgroundach').get(playgroundCtrl.selectAchievment);
 
 module.exports = router;

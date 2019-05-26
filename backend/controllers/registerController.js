@@ -18,6 +18,8 @@ module.exports = {
         message: 'Company name not found!'
       });
     } else {
+      // TODO check if company exists in the db
+
       newUser.save().then(result => {
         res.status(201).json({
           message: 'Company created!',
