@@ -53,7 +53,7 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
   }
 
   unitLevelupAvailable(unit: WorkerModel) {
-    return unit.level <= 5 && this.userService.getUserData().points > this.getLevelUpValue(unit);
+    return unit.level < 5 && this.userService.getUserData().points > this.getLevelUpValue(unit);
   }
 
   newUnitPrice() {

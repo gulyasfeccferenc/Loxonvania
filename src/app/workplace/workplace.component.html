@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">{{ unit.name }}</h5>
-          <p class="card-text"><i class="fas fa-dollar-sign"></i>: {{ unit.produce }} <i class="fas fa-bolt"></i>: {{ unit.xp }}</p>
+          <p class="card-text"><i class="fas fa-dollar-sign"></i>: {{ unit.produce }}  <i class="fas fa-bolt"></i>: {{ unit.xp }}</p>
           <button [disabled]="!unitLevelupAvailable(unit)" class="btn btn-sm btn-info mr-1" (click)="liftUnitLevel(unit, getLevelUpValue(unit))"><i class="fas fa-arrow-circle-up"></i> ( {{ getLevelUpValue(unit) | numberformat}} $ )</button>
           <button class="btn btn-sm btn-danger" (click)="open(unit)"><i class="fas fa-user-times"></i></button>
         </div>

@@ -11,13 +11,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="nav navbar-nav" *ngIf="authService.isAuthenticated()">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
+          <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Irányítópult</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/workplace" routerLinkActive="active">Workplace</a>
+          <a class="nav-link" routerLink="/workplace" routerLinkActive="active">Munkahely</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/achievments" routerLinkActive="active">Achievments</a>
+          <a class="nav-link" routerLink="/achievments" routerLinkActive="active">Kitüntetések</a>
         </li>
       </ul>
       <ul class="nav navbar-nav ml-auto" *ngIf="authService.isAuthenticated()">
@@ -25,16 +25,16 @@
           <span class="nav-link arrow-cursor" ><i class="fas fa-person-booth"></i> {{ authService.getLoggedInUserName() }}</span>
         </li>
         <li class="nav-item">
-          <a class="nav-link" style="cursor: pointer" (click)="logoutUser()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+          <a class="nav-link" style="cursor: pointer" (click)="logoutUser()"><i class="fas fa-sign-out-alt"></i> Kijelentkezés</a>
         </li>
       </ul>
 
       <ul class="nav navbar-nav ml-auto" *ngIf="!authService.isAuthenticated()">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/signup" routerLinkActive="active"><i class="fas fa-user-plus"></i> Sign up</a>
+          <a class="nav-link" routerLink="/signup" routerLinkActive="active"><i class="fas fa-user-plus"></i> Regisztráció</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/signin" routerLinkActive="active"><i class="fas fa-sign-in-alt"></i> Sign in</a>
+          <a class="nav-link" routerLink="/signin" routerLinkActive="active"><i class="fas fa-sign-in-alt"></i> Bejelentkezés</a>
         </li>
       </ul>
     </div>
