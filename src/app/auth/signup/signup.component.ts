@@ -38,7 +38,7 @@ export class SignupComponent implements OnInit {
           if (error.error != null && error.error.message != null) {
             this.handleAuthError(error.error.message.toLowerCase());
           } else {
-            this.alerts.push({type: 'danger', message: error.message.toString() });
+            // this.alerts.push({type: 'danger', message: error.message.toString() });
             console.error('HIBA TÖRTÉNT:', error);
           }
         });
@@ -69,7 +69,7 @@ export class SignupComponent implements OnInit {
     } else if (msg.includes('company')) {
       document.getElementById('company').classList.add('is-invalid');
     }
-    this.alerts.push({type: 'danger', message: msg});
+    // this.alerts.push({type: 'danger', message: msg});
   }
 
   clearAuthError() {

@@ -61,9 +61,11 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.content = this.excuses[rand].content;
     modalRef.componentInstance.button = 'Nem érdekel, kirúgom!';
     modalRef.result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
+      // this.closeResult = `Closed with: ${result}`;
+      console.error('Closed with ', result);
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      console.error('Closed with ', reason);
     });
   }
 
