@@ -13,9 +13,9 @@ module.exports = {
       level: 0
     });
     console.log(newUser);
-    if (newUser.company == null || newUser.name == null) {
-      res.status(202).json({
-        message: 'Not your arany micikéd'
+    if (newUser.company == null || newUser.name == null || newUser.company.length < 1) {
+      res.status(401).json({
+        message: 'Company name not found!'
       });
     } else {
       newUser.save().then(result => {

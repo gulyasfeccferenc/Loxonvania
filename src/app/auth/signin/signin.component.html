@@ -1,15 +1,27 @@
-<div class="container container-card mt-5 pt-5">
-  <div class="row">
-    <form class="col-sm-4 col-md-offset-2 p-5" (ngSubmit)="onSignIn(f)" #f="ngForm">
+<div class="container mt-5">
+  <div class="row container-box form-row">
+    <div class="col-sm-12 p-1">
+      <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.type" (close)="close(alert)">Hiba történt: {{ alert.message }}</ngb-alert>
+      </p>
+    </div>
+    <form class="col-sm-12 col-lg-4 offset-lg-4 p-5" (ngSubmit)="onSignIn(f)" #f="ngForm">
+      <h3>Bejelentkezés</h3>
       <div class="form-group">
-        <label for="email">Mail</label><br>
-        <input type="email" id="email" name="email" ngModel class="form-control">
+        <label for="email">Loxonos email cím</label><br>
+        <input type="email" id="email" name="email" placeholder="darth.vader@loxon.eu" ngModel class="form-control">
+        <div class="invalid-feedback">
+          Nem találunk ilyen felhasználót :( <br><a href="/signup">Regisztráltál már?</a>
+        </div>
       </div>
       <div class="form-group">
-        <label for="password">Password</label><br>
-        <input type="password" id="password" name="password" ngModel class="form-control">
+        <label for="password">Jelszó</label><br>
+        <input type="password" id="password" name="password" ngModel placeholder="LDAP jelszó" class="form-control">
+        <div class="invalid-feedback">
+          Hibás jelszó!
+        </div>
       </div>
-      <button class="btn btn-primary" type="submit">Let's check my company!</button>
+      <button class="btn btn-primary" type="submit">Lássuk, mi a helyzet a cégemmel!</button>
     </form>
   </div>
 </div>

@@ -29,13 +29,13 @@ export class AuthService {
       .subscribe(
         (data) => {
           this.tokenService.setAuthData(data);
-          this.router.navigateByUrl('/workplace');
+          // this.router.navigateByUrl('/workplace');
           observer.next(true);
           observer.complete();
         },
         (error) => {
           this.tokenService.clearAuthData();
-          observer.error();
+          observer.error(error);
         });
     });
   }

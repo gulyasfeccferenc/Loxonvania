@@ -1,21 +1,40 @@
-<div class="container container-card mt-5 pt-5">
-  <div class="row">
-    <form class="col-sm-4 col-md-offset-2 p-5" (ngSubmit)="onSignUp(f)" #f="ngForm">
+<div class="container mt-5">
+  <div class="row container-box form-row">
+    <div class="col-sm-12 p-1">
+      <p *ngFor="let alert of alerts">
+        <ngb-alert [type]="alert.type" (close)="close(alert)">Hiba történt: {{ alert.message }}</ngb-alert>
+      </p>
+    </div>
+    <form class="col-sm-12 col-lg-4 offset-lg-4 p-5" (ngSubmit)="onSignUp(f)" #f="ngForm">
+      <h3>Új cég létrehozása</h3>
       <div class="form-group">
-        <label for="email">Mail</label><br>
-        <input type="email" id="email" name="email" ngModel #emailInput="ngModel" class="form-control" required email placeholder="aladar.mezga@loxon.eu">
-        <span *ngIf="pwdInput.invalid">Your company email address</span>
+        <label for="email">Loxonos email cím</label><br>
+        <input type="email" id="email" name="email" ngModel #emailInput="ngModel"
+               class="form-control" required email placeholder="anakin.skywalker@loxon.eu">
+        <div class="invalid-feedback">
+          Nem találunk ilyen felhasználót :( <br>Biztos, hogy a Loxonos email címed adtad meg?
+        </div>
       </div>
       <div class="form-group">
-        <label for="password">Password</label><br>
-        <input type="password" id="password" name="password" #pwdInput="ngModel" ngModel class="form-control" required>
-        <span *ngIf="pwdInput.invalid">Your password used with LDAP</span>
+        <label for="password">Jelszó</label><br>
+        <input type="password" id="password" name="password"
+               #pwdInput="ngModel" ngModel class="form-control"
+               required placeholder="LDAP jelszó">
+        <div class="invalid-feedback">
+          Hibás jelszó!
+        </div>
       </div>
       <div class="form-group">
-        <label for="company">Your Company's name</label><br>
-        <input type="text" id="company" name="company" ngModel #companyInput="ngModel" (ngModelChange)="companyNameRefreshed($event)" class="form-control" maxlength="30" required>
+        <label for="company">Az új céged neve</label><br>
+        <input type="text" id="company" autocomplete="off" name="company"
+               ngModel #companyInput="ngModel"
+               (ngModelChange)="companyNameRefreshed($event)"
+               class="form-control" maxlength="30" required>
+        <div class="invalid-feedback">
+          Valami nem stimmel ezzel a névvel... Próbálj meg egy másikat!
+        </div>
       </div>
-      <button class="btn btn-primary" type="submit">Create {{ company | titlecase }}!</button>
+      <button class="btn btn-primary" type="submit">{{ company | titlecase }} létrehozása!</button>
     </form>
   </div>
 </div>
