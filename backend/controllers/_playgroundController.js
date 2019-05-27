@@ -35,7 +35,7 @@ module.exports = {
       .then(
         ach => {
           res.status(200).json({
-            message: 'Found achievment: ' + ach[0].name
+            message: 'Found achievment: ' + ach[0]
           });
         },
         error => {

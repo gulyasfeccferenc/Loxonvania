@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const unitSchema = mongoose.Schema({
-  id: String,
+  // id: String, // TODO
   name: {
     type: String,
     require: true

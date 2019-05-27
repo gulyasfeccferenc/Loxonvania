@@ -1,3 +1,5 @@
+var faker = require('faker');
+
 module.exports = {
 
   list: (req, res) => {
@@ -22,18 +24,32 @@ module.exports = {
   } // end of list
   ,
   generate: (req, res) => {
+
+    //TODO felhasznalni a powerupok erejet!!!
+    const type = Math.floor(Math.random() * 2) + 1; // 1 or 2
+    const prods = [10, 2][type-1]; // calculate based on the type
+    const xp =    [1, 10][type-1]; // calculate based on the type
+
     const generatedUnit = {
-      name: 'Józsi',
-      sprite: '',
-      description: 'A legjobb munkaerő',
+      id: '', //TODO user id
+      name: faker.name.findName(), // 'Józsi',
+      sprite: faker.image.avatar, // faker.image.avatar,
+      description: faker.hacker.phrase(), // 'A legjobb munkaerő',
       joined: new Date(),
       active: true,
       level: 0,
-      type: 2,
-      produce: 2,
-      xp: 10
+      type: type, //2,
+      produce: prods,
+      xp: xp
       //owner: currentUser
     };
+
+    //get user
+    // save id to user
+
+    // save the unit
+    usedid = req.body.email;
+
     res.status(200).json({
       message: 'Behold your new unit!',
       unit: generatedUnit
@@ -49,12 +65,17 @@ module.exports = {
     );
   } // end of update
   ,
-  destroy: (req, res) => {
+  fire: (req, res) => {
     console.log(req);
-    const id = req.query.id;
     res.status(200).json(
-      { message: 'Destroyed ' + id }
+      { message: 'Fired'}
     );
   } // end of destroy
+  ,
+  lift: (req, res) => {
+    res.status(200).json(
+      { message: 'Lifted ' }
+    );
+  }
 
 }
