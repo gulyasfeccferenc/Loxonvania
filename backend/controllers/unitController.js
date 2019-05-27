@@ -1,59 +1,86 @@
 var faker = require('faker');
+const Unit = require('../models/worker');
+
+function genUnit() {
+  //TODO felhasznalni a powerupok erejet!!!
+  const type = Math.floor(Math.random() * 2) + 1; // 1 or 2
+  const prods = [10, 2][type-1]; // calculate based on the type
+  const xp =    [1, 10][type-1]; // calculate based on the type
+
+  return new Unit({
+    id: '',
+    name: faker.name.findName(), // 'Józsi',
+    sprite: faker.image.avatar, // faker.image.avatar,
+    description: faker.hacker.phrase(), // 'A legjobb munkaerő',
+    joined: new Date(),
+    active: true,
+    level: 0,
+    type: type, //2,
+    produce: prods,
+    xp: xp,
+    owner: userId
+  });
+}
 
 module.exports = {
 
   list: (req, res) => {
-    const units = [
-      {
-        name: 'Steve Jobs',
-        sprite: '',
-        description: 'Elsőszámú fejlesztő',
-        joined: new Date(),
-        active: true,
-        level: 0,
-        type: 1,
-        produce: 10,
-        xp: 1
-        //owner: currentUser
+    //select units from mongodb based on the userId
+    userId = req.body.id; // normal use: req.body.id; // for testing with postman: req.query.id;
+
+    Unit.find({owner: userId}).then(
+      units => {
+        if (units.length > 0) {
+          res.status(200).json({
+            message: 'Ahoy, retrieved all your beloved units.!',
+            units: units
+          });
+        } else if(userId) {
+          const starter = genUnit();
+
+          starter.save().then(result => {
+            res.status(200).json({
+              message: 'Behold your new basic unit!',
+              unit: [ starter ],
+            });
+          }).catch(error => {
+            res.status(500).json({
+              message: 'Unit couldn\'t be created!',
+              error: error
+            });
+          });
+        } else {
+          res.status(500).json({
+            message: 'Invalid id, no unit created for you, dear hakkor!'
+          });
+        }
       }
-    ];
-    res.status(200).json({
-      message: 'Wow, this is done!',
-      units: units
-    });
+      ,
+      error => {
+        return res.status(444).json({
+          message: 'Query error: Units not found: ' + error
+        });
+      }
+    );
   } // end of list
   ,
   generate: (req, res) => {
+    userId = req.query.id; // req.body.id;
 
-    //TODO felhasznalni a powerupok erejet!!!
-    const type = Math.floor(Math.random() * 2) + 1; // 1 or 2
-    const prods = [10, 2][type-1]; // calculate based on the type
-    const xp =    [1, 10][type-1]; // calculate based on the type
-
-    const generatedUnit = {
-      id: '', //TODO user id
-      name: faker.name.findName(), // 'Józsi',
-      sprite: faker.image.avatar, // faker.image.avatar,
-      description: faker.hacker.phrase(), // 'A legjobb munkaerő',
-      joined: new Date(),
-      active: true,
-      level: 0,
-      type: type, //2,
-      produce: prods,
-      xp: xp
-      //owner: currentUser
-    };
-
-    //get user
-    // save id to user
-
-    // save the unit
-    usedid = req.body.email;
-
-    res.status(200).json({
-      message: 'Behold your new unit!',
-      unit: generatedUnit
+    const generatedUnit = genUnit();
+    generatedUnit.save().then(result => {
+      res.status(200).json({
+        message: 'Behold your new unit!',
+        unit: generatedUnit,
+      });
+    }).catch(error => {
+      res.status(500).json({
+        message: 'Unit couldn\'t be created!',
+        error: error
+      });
     });
+
+
   } // end of generate
   ,
   update: (req, res) => {

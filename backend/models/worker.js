@@ -20,6 +20,7 @@ const unitSchema = mongoose.Schema({
   },
   type: Number,
   produce: Number,
+  xp: Number,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

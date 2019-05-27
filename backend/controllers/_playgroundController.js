@@ -1,10 +1,69 @@
 const Achievment = require('../models/achievment');
 const Level = require('../models/level');
+const User = require('../models/user');
+const Unit = require('../models/worker');
 
 module.exports = {
 
   play: (req, res) => {
-    const achievment = new Achievment({
+    console.log('PLAY');
+    /*User.find({}).then( user =>
+      {
+        return res.status(401).json({
+          message: 'got user: ' + user
+        });
+      }
+      , error => {
+        return res.status(444).json({
+          message: 'not got user: ' + error
+        });
+      }
+    );
+    */
+
+    Unit.remove({}).then(
+      r => {
+        return res.status(401).json({
+          message: 'removed',
+        });
+      },
+      error => {
+        message: 'error remove: ' + error
+      }
+    );
+
+
+    /*Unit.find({}).then( unit =>
+      {
+        return res.status(401).json({
+          message: 'got unit: ',
+          units: unit
+        });
+      }
+      , error => {
+        return res.status(444).json({
+          message: 'not got unit: ' + error
+        });
+      }
+    );*/
+
+
+    /*
+    User.findOne( {
+      name: 'tamas.enyedi@loxon.eu' //req.body.email //TODO: Check for company not null
+    }).then(user => {
+        return res.status(401).json({
+          message: 'got user: ' + user
+        });
+      }, error => {
+        return res.status(444).json({
+          message: 'not got user: ' + user
+        });
+    });
+
+     */
+
+    /*const achievment = new Achievment({
       id: 1,
       name: 'FirstAchievment',
       desc: 'This is the first achievment',
@@ -25,7 +84,7 @@ module.exports = {
         error: error
       });
     });
-
+*/
     // res.send('Gunar world');
   } // end of play
   ,
