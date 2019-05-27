@@ -28,7 +28,7 @@ export class UserService {
       .post<{message: string, userData: User}>('http://localhost:3000/api/user', { email: this.user.email })
       .subscribe(
         userData => {
-          this.user = userData;
+          this.user = userData.userData;
           this.shared.userId = this.user.id;
           console.log(userData);
         });

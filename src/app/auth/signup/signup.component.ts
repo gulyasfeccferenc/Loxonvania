@@ -24,11 +24,13 @@ export class SignupComponent implements OnInit {
     const email = form.value.email;
     const password = form.value.password;
     const companyName = form.value.company;
-    const registration: User = {name: email, company: companyName, level: [], points: 0, xp: 30 };
+    let registration: User = {id: null, name: null, email: email, company: companyName, level: [], points: 0, xp: 30 };
     this.clearAuthError();
 
-    this.authService.authenticate(email, password).subscribe(() => {
+    this.authService.authenticate(email, password).subscribe((userData) => {
       console.log(registration);
+      const userName = this.authService.getLoggedInUserName();
+      registration.name = userName;
       this.httpClient
         .post<{message: string}>('http://localhost:3000/api/register', registration, {headers: {'Content-Type': 'application/json' } })
         .subscribe(postData => {
@@ -38,7 +40,7 @@ export class SignupComponent implements OnInit {
           if (error.error != null && error.error.message != null) {
             this.handleAuthError(error.error.message.toLowerCase());
           } else {
-            // this.alerts.push({type: 'danger', message: error.message.toString() });
+            this.alerts.push({type: 'danger', message: error.message.toString() });
             console.error('HIBA TÖRTÉNT:', error);
           }
         });
