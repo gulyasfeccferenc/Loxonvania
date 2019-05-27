@@ -1,40 +1,54 @@
 <div class="container text-center mt-5 p-5">
-  <div class="row container-box">
-    <p class="hidden">Orpus Milus bajban volt. A határidő ma este, de neki még kellene egy hét. Úgy néz ki, hogy a projekt csúszni fog. Viszont Milus mindent megtett, hogy ez ne történjen meg. Már este 10 múlt és még mindig nincs kész az új verzió. Gyorsabban kell dolgoznia. Beindult, mintha megszállta volna az ördög, nagyon gyorsan gépelt. Fél óra múlva megállt, mintha mi sem történt volna, kivette az USB-meghajtót a gépből és vigyorgott. KÉSZ! Elkészült az univerzális, mindent megoldó függvény. A verzió már nem is érdekelte.
-      A projektek főnökei érezték, hogy valami nagy dolog történt. Kiküldték a csatlósaikat, hogy szerezzék meg az univerzális függvényt, hiszen így többé nem kell más cégekkel megoldani a problémáikat...</p>
+  <div class="row container-box p-3">
+    <ngb-carousel *ngIf="slides">
+      <ng-template ngbSlide>
+        <img [src]="slides[0].src" alt="Random first slide">
+        <div class="carousel-caption">
+          <h3>First slide label</h3>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        </div>
+      </ng-template>
+      <ng-template ngbSlide>
+        <img [src]="slides[0].src" alt="Random second slide">
+        <div class="carousel-caption">
+          <h3>Second slide label</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </ng-template>
+      <ng-template ngbSlide>
+        <img [src]="slides[0].src" alt="Random third slide">
+        <div class="carousel-caption">
+          <h3>Third slide label</h3>
+          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+        </div>
+      </ng-template>
+    </ngb-carousel>
   </div>
 </div>
-<div class="container mt-5 p-5">
-  <div class="row container-box ">
-    <table class="table table-dark">
+<div class="container mt-5">
+  <div class="row container-box p-3">
+    <h3>Legjobbjaink:</h3>
+    <table class="table table-dark mt-2">
       <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Név</th>
+        <th scope="col">Név (Cég)</th>
         <th scope="col">Szint</th>
         <th scope="col">Pontszám</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Kiülőmester</td>
-        <td>999+</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Kiülőmester</td>
-        <td>999+</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>Kiülőmester</td>
-        <td>999+</td>
-      </tr>
+        <tr *ngFor="let lead of leaders">
+          <th scope="row">*</th>
+          <td>{{ lead.name }} ( {{ lead.company }} )</td>
+          <td>{{ lead.level }}</td>
+          <td>{{ lead.points }}</td>
+        </tr>
       </tbody>
     </table>
   </div>
 </div>
+<!--<div class="row container-box">-->
+<!--  <p>Orpus Milus bajban volt. A határidő ma este, de neki még kellene egy hét. Úgy néz ki, hogy a projekt csúszni fog. Viszont Milus mindent megtett, hogy ez ne történjen meg. Már este 10 múlt és még mindig nincs kész az új verzió. Gyorsabban kell dolgoznia. Beindult, mintha megszállta volna az ördög, nagyon gyorsan gépelt. Fél óra múlva megállt, mintha mi sem történt volna, kivette az USB-meghajtót a gépből és vigyorgott. KÉSZ! Elkészült az univerzális, mindent megoldó függvény. A verzió már nem is érdekelte.-->
+<!--    A projektek főnökei érezték, hogy valami nagy dolog történt. Kiküldték a csatlósaikat, hogy szerezzék meg az univerzális függvényt, hiszen így többé nem kell más cégekkel megoldani a problémáikat...</p>-->
+<!--</div>-->
