@@ -32,7 +32,7 @@ export class UnitService {
 
   generateUnit() {
     this.httpClient
-      .get<{message: string, unit: WorkerModel}>('http://localhost:3000/api/units/generate')
+      .post<{message: string, unit: WorkerModel}>('http://localhost:3000/api/units/generate', { id: this.shared.userId })
       .subscribe(
         postData => {
           this.addUnit(postData.unit);
@@ -52,7 +52,7 @@ export class UnitService {
    */
   getUnits() {
     this.httpClient
-      .get<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list')
+      .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list', { id: this.shared.userId })
       .subscribe(
         postData => {
           this.units = postData.units;
@@ -63,6 +63,10 @@ export class UnitService {
 
           this.unitsUpdated.next(this.units.slice());
         });
+  }
+
+  getNrOfUnits(): number {
+    return this.units.length;
   }
 
   calcAllUnitPoint(units: WorkerModel[]) {
@@ -83,7 +87,13 @@ export class UnitService {
     if (nr != null) {
       this.units[nr].level++;
       // TODO: Backend update
-      this.unitsUpdated.next(this.units);
+      this.httpClient
+        .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/unit/lift', { id: this.shared.userId, unitId: unit.id })
+        .subscribe(
+          postData => {
+            console.error(postData);
+          });
+      this.unitsUpdated.next(this.units.slice());
     }
   }
 
@@ -96,6 +106,12 @@ export class UnitService {
     this.units.splice(this.units.indexOf(unit), 1);
 
     // TODO: Backend destroy
+    this.httpClient
+      .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/unit/fire', { id: this.shared.userId, unitId: unit.id })
+      .subscribe(
+        postData => {
+          console.error(postData);
+        });
     this.unitsUpdated.next(this.units.slice());
   }
 }

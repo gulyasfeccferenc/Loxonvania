@@ -1,4 +1,10 @@
-<div class="container text-center p-2 mt-5">
+<div class="container text-center">
+  <h1>
+    Iroda
+  </h1>
+  <p>
+    Itt láthatod a dolgozóid és itt vehetsz fel új kollégákat, a maximális létszám jelenleg: <strong>{{ getCapacity() }}</strong>
+  </p>
   <div class="row">
     <br>
     <div class="col-sm-3 mb-3" *ngFor="let unit of units">

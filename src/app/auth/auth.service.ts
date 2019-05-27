@@ -4,8 +4,8 @@ import { TokenService } from './token.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthResponse } from '../models/auth/AuthResponse';
-import { User } from '../models/auth/user.model';
 import { Observable } from 'rxjs';
+import {UserService} from '../user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,8 @@ export class AuthService {
   constructor(
     private tokenService: TokenService,
     private httpClient: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private userService: UserService) { }
 
   public redirectToAuthServer(myAppName, redirectUrl) {
     window.location.href = this.serverPrefix + '?redirect=' + encodeURIComponent(redirectUrl) + '&appname=' + encodeURIComponent(myAppName);
@@ -29,6 +30,7 @@ export class AuthService {
       .subscribe(
         (data) => {
           this.tokenService.setAuthData(data);
+          this.userService.setUserEmail(username);
           // this.router.navigateByUrl('/workplace');
           observer.next(true);
           observer.complete();

@@ -49,7 +49,7 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
   }
 
   newUnitAvailable() { //TODO: Proper calculation need to be added here
-    return this.userService.getUserData().points > this.newUnitPrice();
+    return (this.userService.getUserData().points > this.newUnitPrice()) && (this.unitService.getNrOfUnits() < this.getCapacity());
   }
 
   unitLevelupAvailable(unit: WorkerModel) {
@@ -62,6 +62,10 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
 
   getLevelUpValue(unit: WorkerModel) {
     return unit.level * 250 + 250;
+  }
+
+  getCapacity() {
+    return (this.userService.getUserData().level.length + 1) * 5;
   }
 
   liftUnitLevel(unit: WorkerModel, price: number) {

@@ -5,8 +5,12 @@ import {Subject} from 'rxjs';
   providedIn: 'root'
 })
 export class SharedService {
+  // Dynamic values
   _produceValue: Subject<number> = new Subject();
   _xpValue: Subject<number> = new Subject();
+
+  // Passive values
+  private _userId: string;
 
   /** GETTERS & SETTERS */
   get produceValue(): Subject<number> {
@@ -20,6 +24,12 @@ export class SharedService {
   }
   set xpValue(src: Subject<number>) {
     this._xpValue = src;
+  }
+  get userId(): string {
+    return this._userId;
+  }
+  set userId(value: string) {
+    this._userId = value;
   }
 
   constructor() { }
