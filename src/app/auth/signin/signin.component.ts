@@ -4,6 +4,8 @@ import {NgForm} from '@angular/forms';
 import {TokenService} from '../token.service';
 import {Router} from '@angular/router';
 import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
+import {HttpClient} from '@angular/common/http';
+import {SharedService} from '../../shared.service';
 
 @Component({
   selector: 'app-signin',
@@ -13,7 +15,7 @@ import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 export class SigninComponent implements OnInit {
   alerts = [];
 
-  constructor(private authService: AuthService, private tokenService: TokenService, private router: Router) { }
+  constructor(private authService: AuthService, private tokenService: TokenService, private router: Router, private httpClient: HttpClient) { }
 
   ngOnInit() {
   }
@@ -26,7 +28,12 @@ export class SigninComponent implements OnInit {
       console.log(this.authService.getLoggedInUserName());
       console.log(this.tokenService.getUserName());
       console.log(this.tokenService.getEverything());
-      this.router.navigateByUrl('/workplace');
+
+      this.httpClient.post('http://localhost:3000/api/login', {email}).subscribe(
+        () => {
+          this.router.navigateByUrl('/workplace');
+        }
+      );
     }, (e) => {
       console.log('Signin error:', e);
       this.handleAuthError(e.error.error_description.toLowerCase());

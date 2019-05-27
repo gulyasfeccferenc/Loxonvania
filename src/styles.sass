@@ -6,7 +6,35 @@ body
   background-image: linear-gradient(to right, rgb(58, 63, 118), rgb(64, 155, 150))
   color: #5ae5f3
   text-shadow: 1px 1px #231cce
-  padding-top: 56px;
+  padding-top: 56px
+  -webkit-transition: all .3s linear
+  -moz-transition: all .3s linear
+  -ms-transition: all .3s linear
+  -o-transition: all .3s linear
+  transition: all .30s linear
+
+  &.pink
+    background-image: linear-gradient(to right, #76354f, #db5fdb)
+    -webkit-transition: all .3s linear
+    -moz-transition: all .3s linear
+    -ms-transition: all .3s linear
+    -o-transition: all .3s linear
+    transition: all .30s linear
+
+  &.lime
+    background-image: linear-gradient(to right, #2d766b, #92ff69)
+    -webkit-transition: all .3s linear
+    -moz-transition: all .3s linear
+    -ms-transition: all .3s linear
+    -o-transition: all .3s linear
+    transition: all .30s linear
+  &.grey
+    background-image: linear-gradient(to right, #113232, rgba(41, 41, 41, 0.48))
+    -webkit-transition: all .3s linear
+    -moz-transition: all .3s linear
+    -ms-transition: all .3s linear
+    -o-transition: all .3s linear
+    transition: all .30s linear
 
   .popover-header
     color: $indigo

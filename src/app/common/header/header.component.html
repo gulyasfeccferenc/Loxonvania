@@ -22,7 +22,7 @@
       </ul>
       <ul class="nav navbar-nav ml-auto" *ngIf="authService.isAuthenticated()">
         <li class="nav-item">
-          <span class="nav-link arrow-cursor" ><i class="fas fa-person-booth"></i> {{ authService.getLoggedInUserName() }}</span>
+          <a class="nav-link" style="cursor: pointer" routerLink="/profile" routerLinkActive="active"><i class="fas fa-person-booth"></i> {{ authService.getLoggedInUserName() }}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" style="cursor: pointer" (click)="logoutUser()"><i class="fas fa-sign-out-alt"></i> Kijelentkezés</a>

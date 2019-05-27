@@ -1,0 +1,23 @@
+<div class="container text-center achievments">
+  <h1>
+    Profil
+  </h1>
+  <p title="Annyira nem is titkos, mint amennyire szuper!">
+    <strong>{{ this.user.getUserData().name }}</strong> szupertitkos beállításai
+  </p>
+
+  <div class="row">
+    <div class="col-sm-12 text-left container-box p-3">
+      <h3>Háttér kiválasztása</h3>
+      <p>Válassz ki egy színt, ami végigkíséri a pályafutásod</p>
+      <div class="color-chooser mt-2" *ngFor="let color of colors">
+        <span [ngClass]="color.color" (click)="changeColor(color)">{{ color.name }}</span>
+      </div>
+    </div>
+    <div class="col-sm-12 text-left mt-5 container-box p-3">
+      <h3>ERP integráció</h3>
+      <p>Az LDAP szinkronizáció segítségével integrálhatjuk az ERP fiókod is. A csatlakoztatás véletlenszerűen töröl 8 munkaórát az előző 2 hétben lelogolt munkaidődből, melyet instant <strong>1000$</strong> hackpointra váltunk át! Ez az összekötés csak egyszer végezhető el!</p>
+      <button class="btn btn-danger" (click)="openModal()">Ide a hackpontokkal!</button>
+    </div>
+  </div>
+</div>

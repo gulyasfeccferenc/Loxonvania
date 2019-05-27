@@ -30,7 +30,8 @@ export class AuthService {
       .subscribe(
         (data) => {
           this.tokenService.setAuthData(data);
-          this.userService.setUserEmail(username);
+          // this.userService.setUserEmail(username);
+          console.warn(this.userService.getUserData());
           // this.router.navigateByUrl('/workplace');
           observer.next(true);
           observer.complete();

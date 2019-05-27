@@ -20,6 +20,7 @@ import {AchievmentPipe} from './achievments/achievment.pipe';
 import {NumberformatPipe} from './widget/numberformat.pipe';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ModalContentComponent } from './common/modal-content/modal-content.component';
+import {ProfileComponent} from './auth/profile/profile.component';
 
 const appRoutes: Routes = [
   // {
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
     LoggedoutComponent,
     AchievmentPipe,
     NumberformatPipe,
-    ModalContentComponent
+    ModalContentComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -66,4 +68,6 @@ const appRoutes: Routes = [
   bootstrap: [AppComponent],
   entryComponents: [ModalContentComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}

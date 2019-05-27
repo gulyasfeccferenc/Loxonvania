@@ -10,7 +10,10 @@ export class AppComponent implements OnInit{
   title = 'Loxon Idle';
 
   ngOnInit(): void {
-    //
+    const color = localStorage.getItem('background-color');
+    if (color != null) {
+      document.querySelector('body').className = color;
+    }
   }
 
   constructor(private authService: AuthService) {

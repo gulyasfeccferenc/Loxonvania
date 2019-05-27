@@ -30,6 +30,7 @@ export class SignupComponent implements OnInit {
     this.authService.authenticate(email, password).subscribe((userData) => {
       console.log(registration);
       const userName = this.authService.getLoggedInUserName();
+      console.warn(userName);
       registration.name = userName;
       this.httpClient
         .post<{message: string}>('http://localhost:3000/api/register', registration, {headers: {'Content-Type': 'application/json' } })

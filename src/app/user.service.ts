@@ -24,14 +24,14 @@ export class UserService {
   constructor(private httpClient: HttpClient, private unitService: UnitService, private shared: SharedService) { }
 
   getUserData(): User {
-    this.httpClient
-      .post<{message: string, userData: User}>('http://localhost:3000/api/user', { email: this.user.email })
-      .subscribe(
-        userData => {
-          this.user = userData.userData;
-          this.shared.userId = this.user.id;
-          console.log(userData);
-        });
+    // this.httpClient
+    //   .post<{message: string, userData: User}>('http://localhost:3000/api/user', { email: this.user.email })
+    //   .subscribe(
+    //     userData => {
+    //       this.user = userData.userData;
+    //       this.shared.userId = this.user.id;
+    //       console.log(userData);
+    //     });
     return this.user;
   }
 
