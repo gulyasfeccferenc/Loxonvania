@@ -12,7 +12,7 @@ export class UserService {
     id: 'asdfasdfad',
     name: 'Fecc',
     email: 'ferenc.gulyas@loxon.eu',
-    points: 0,
+    points: 1000,
     xp: 30,
     company: 'Loxonvania',
     level: []

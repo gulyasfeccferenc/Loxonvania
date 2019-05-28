@@ -51,17 +51,24 @@ export class UnitService {
    * Get all units of the current user
    */
   getUnits() {
+    console.warn("Unit kérelem");
+    console.warn(this.shared.userId);
+
     this.httpClient
       .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list', { id: this.shared.userId })
       .subscribe(
         postData => {
           this.units = postData.units;
-
+          console.warn("POSTDATA");
+          console.warn(postData);
           this.calcAllUnitPoint(postData.units);
           this.shared.changeProduceValue(this.currentProduction);
           this.shared.changeXP(this.currentXpGathering);
 
           this.unitsUpdated.next(this.units.slice());
+        }, error1 => {
+          console.error("NOOOOOO");
+          console.error(error1);
         });
   }
 

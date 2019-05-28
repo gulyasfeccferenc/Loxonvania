@@ -12,7 +12,6 @@ import { WidgetComponent } from './widget/widget.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import {FormsModule} from '@angular/forms';
-import {AuthenticationService} from './auth/authentication.service';
 import {AuthGuardService} from './auth/auth-guard.service';
 import { HttpClientModule } from '@angular/common/http';
 import {LoggedoutComponent} from './auth/loggedout/loggedout.component';
@@ -64,7 +63,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     NgbModule.forRoot()
   ],
-  providers: [AuthenticationService, AuthGuardService, provideIntranetTokenInterceptor()],
+  providers: [AuthGuardService, provideIntranetTokenInterceptor()],
   bootstrap: [AppComponent],
   entryComponents: [ModalContentComponent]
 })

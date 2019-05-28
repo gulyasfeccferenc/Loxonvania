@@ -27,6 +27,7 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
     unitService.getUnits();
     this.unitsSubscription = this.unitService.getUnitsUpdatedListener()
       .subscribe((units: WorkerModel[]) => {
+        console.warn("Jöttek junitok!");
         this.units = units;
       });
     console.warn('constructor');
