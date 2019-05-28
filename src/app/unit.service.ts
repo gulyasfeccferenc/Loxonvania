@@ -68,9 +68,10 @@ export class UnitService {
 
     if (!uID || uID == null) {
       let sharedUser = JSON.parse(localStorage.getItem('user'));
-      uID = sharedUser.id;
+      if (sharedUser) {
+        uID = sharedUser.id;
+      }
     }
-    console.warn(this.shared.userId);
 
     this.httpClient
       .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list', {  id: uID })
@@ -111,9 +112,6 @@ export class UnitService {
       .subscribe(
         postData => {
           this.units = postData.units;
-          console.warn("POSTDATA");
-          console.warn(postData);
-          console.warn(this.units);
           this.calcAllUnitPoint(postData.units);
           this.shared.changeProduceValue(this.currentProduction);
           this.shared.changeXP(this.currentXpGathering);
