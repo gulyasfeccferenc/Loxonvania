@@ -28,40 +28,48 @@ module.exports = {
     //select units from mongodb based on the userId
     userId = req.body.id; // normal use: req.body.id; // for testing with postman: req.query.id;
 
-    Unit.find({owner: userId}).then(
-      units => {
-        if (units.length > 0) {
-          res.status(200).json({
-            message: 'Ahoy, retrieved all your beloved units.!',
-            units: units
-          });
-        } else if(userId) {
-          const starter = genUnit();
-
-          starter.save().then(result => {
+    if(2>1) {
+      const starter = genUnit();
+      res.status(200).json({
+        message: 'Behold your new basic unit!',
+        unit: [starter],
+      });
+    } else {
+      Unit.find({owner: userId}).then(
+        units => {
+          if (units.length > 0) {
             res.status(200).json({
-              message: 'Behold your new basic unit!',
-              unit: [ starter ],
+              message: 'Ahoy, retrieved all your beloved units.!',
+              units: units
             });
-          }).catch(error => {
+          } else if (userId) {
+            const starter = genUnit();
+
+            starter.save().then(result => {
+              res.status(200).json({
+                message: 'Behold your new basic unit!',
+                unit: [starter],
+              });
+            }).catch(error => {
+              res.status(500).json({
+                message: 'Unit couldn\'t be created!',
+                error: error
+              });
+            });
+          } else {
             res.status(500).json({
-              message: 'Unit couldn\'t be created!',
-              error: error
+              message: 'Invalid id, no unit created for you, dear hakkor!'
             });
-          });
-        } else {
-          res.status(500).json({
-            message: 'Invalid id, no unit created for you, dear hakkor!'
+          }
+        }
+        ,
+        error => {
+          return res.status(444).json({
+            message: 'Query error: Units not found: ' + error
           });
         }
-      }
-      ,
-      error => {
-        return res.status(444).json({
-          message: 'Query error: Units not found: ' + error
-        });
-      }
-    );
+      );
+    }
   } // end of list
   ,
   generate: (req, res) => {
