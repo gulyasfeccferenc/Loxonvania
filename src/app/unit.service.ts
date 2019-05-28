@@ -142,13 +142,13 @@ export class UnitService {
     return this.unitsUpdated.asObservable();
   }
 
-  liftUnitLevel(unit: WorkerModel) {
+  liftUnitLevel(unit: WorkerModel, unitId: string, userId: string) {
     const nr = this.units.indexOf(unit);
     if (nr != null) {
       this.units[nr].level++;
       // TODO: Backend update
       this.httpClient
-        .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/unit/lift', { id: this.shared.userId, unitId: unit.id })
+        .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/unit/lift', { id: this.shared.userId, unitId: unitId, newLevel: unit.level })
         .subscribe(
           postData => {
             console.error(postData);

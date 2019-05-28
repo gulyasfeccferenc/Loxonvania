@@ -78,8 +78,8 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
     return (this.userService.getUserData().level.length + 1) * 5 || 5; //TODO: ELRENDEZNI, MIUTÁN A LEVEL TISZTÁZÓDOTT
   }
 
-  liftUnitLevel(unit: WorkerModel, price: number) {
-    this.unitService.liftUnitLevel(unit);
+  liftUnitLevel(unit, price: number) {
+    this.unitService.liftUnitLevel(unit, unit._id, this.userService.getUserData().id);
     this.userService.spendPoints(price);
   }
 

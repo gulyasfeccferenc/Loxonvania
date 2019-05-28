@@ -87,9 +87,14 @@ module.exports = {
   update: (req, res) => {
     const id = req.body.unitId;
 
-    Unit.updateOne({_id : id}).then(
+    Unit.updateOne({_id : id}, {
+      $set: {
+        "level": req.body.newLevel
+      }
+    }).then(
       result => {
-
+        console.warn("RESULT");
+        console.warn(result);
         res.status(200).json(
           {
             message: 'Updated ' + id
@@ -141,10 +146,29 @@ module.exports = {
   } // end of destroy
   ,
   lift: (req, res) => {
-    const id = req.body.id;
-    res.status(200).json(
-      { message: 'Lifted ' }
+    const id = req.body.unitId;
+    console.log("id");
+    console.log(id);
+    User.find({ _id: id }).then(
+      r => {
+        console.log(r);
+      }
     );
+    Unit.updateOne({ _id : id}, {
+      $set: {
+        level: req.body.newLevel
+      }
+    }).then(
+      result => {
+        console.warn("RESULT");
+        console.warn(result);
+        res.status(200).json(
+          {
+            message: 'Updated ' + id
+          }
+        )
+      }
+    )
   }
 
 }
