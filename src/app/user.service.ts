@@ -31,13 +31,9 @@ export class UserService {
       }))
       .subscribe(
         transfUserData => {
-          console.warn("USERDATA::::::");
-          console.warn(transfUserData);
           this.user = transfUserData;
           this.shared.userId = this.user.id;
-
-          console.log(this.shared.userId);
-          console.log(this.user.id);
+          localStorage.setItem('user', JSON.stringify(this.user));
         });
   }
 

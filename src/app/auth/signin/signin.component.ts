@@ -6,7 +6,6 @@ import {Router} from '@angular/router';
 import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient} from '@angular/common/http';
 import {SharedService} from '../../shared.service';
-import {User} from '../../models/auth/user.model';
 import {map} from 'rxjs/operators';
 
 @Component({
@@ -49,8 +48,6 @@ export class SigninComponent implements OnInit {
         }))
         .subscribe(
         (next) => {
-          console.log("NEXT::::::::::::::");
-          console.log(next);
           this.shared.userId = next;
           console.log(this.shared.userId);
           this.router.navigateByUrl('/workplace');

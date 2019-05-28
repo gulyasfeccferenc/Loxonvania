@@ -11,6 +11,12 @@ export class AppComponent implements OnInit{
   title = 'Loxon Idle';
 
   ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user != null && this.user.getUserData() == null) {
+        this.user.setUserData(user);
+      }
+    }
     const color = localStorage.getItem('background-color');
     if (color != null) {
       document.querySelector('body').className = color;
