@@ -15,7 +15,7 @@ router.route('/login').post(loginCtrl.login);
 router.route('/register').post(regCtrl.register);
 
 // units
-router.route('/units/list').post(unitCtrl.list);
+router.route('/units/list').get(unitCtrl.list);
 router.route('/units/generate').post(unitCtrl.generate);
 
 router.route('/units/update').post(unitCtrl.update);

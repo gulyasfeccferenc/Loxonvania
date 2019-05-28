@@ -26,7 +26,7 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       }));
     } else {
-      if (this.authService.isAuthenticated()) {
+      if (this.authService != null && this.authService.isAuthenticated()) {
         if (this.tokenService.isAccessTokenValid()) {
           return next.handle(request.clone({
             setHeaders: {

@@ -52,21 +52,22 @@ export class UnitService {
    */
   getUnits() {
     console.warn("Unit kérelem");
-    console.warn(this.shared.userId);
+    // console.warn(this.shared.userId);
 
     this.httpClient
-      .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list', { id: this.shared.userId })
+      .get<{message: string, unit: WorkerModel[]}>('http://localhost:3000/api/units/list')
       .subscribe(
         postData => {
-          this.units = postData.units;
+          this.units = postData.unit;
           console.warn("POSTDATA");
           console.warn(postData);
-          this.calcAllUnitPoint(postData.units);
+          console.warn(this.units);
+          this.calcAllUnitPoint(postData.unit);
           this.shared.changeProduceValue(this.currentProduction);
           this.shared.changeXP(this.currentXpGathering);
 
           this.unitsUpdated.next(this.units.slice());
-        }, error1 => {
+        }, (error1) => {
           console.error("NOOOOOO");
           console.error(error1);
         });

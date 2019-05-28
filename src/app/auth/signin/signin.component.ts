@@ -31,12 +31,12 @@ export class SigninComponent implements OnInit {
 
       // this.httpClient.post('http://localhost:3000/api/login', {email}).subscribe(
       //   () => {
-          this.router.navigateByUrl('/workplace');
+      this.router.navigateByUrl('/workplace');
         // }
       // );
     }, (e) => {
       console.log('Signin error:', e);
-      this.handleAuthError(e.error.error_description.toLowerCase());
+      // this.handleAuthError(e.error.error_description.toLowerCase());
     });
   }
 
