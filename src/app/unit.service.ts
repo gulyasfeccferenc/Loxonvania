@@ -1,5 +1,5 @@
 import {WorkerModel} from './models/worker/worker.model';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subject, timer} from 'rxjs';
 import {ChangeDetectorRef, Injectable} from '@angular/core';
 import {SharedService} from './shared.service';
@@ -33,7 +33,7 @@ export class UnitService {
 
   generateUnit() {
     this.httpClient
-      .post<{message: string, unit: WorkerModel}>('http://localhost:3000/api/units/generate', { id: this.shared.userId })
+      .post<{message: string, unit: WorkerModel}>('http://localhost:3000/api/units/generate', { id: this.shared.userId }, {})
       .subscribe(
         postData => {
           console.log(":::GETTING NEW UNIT");
@@ -57,11 +57,22 @@ export class UnitService {
    * Get all units of the current user
    */
   getUnits() {
-    console.warn("Unit kérelem");
     // console.warn(this.shared.userId);
+    const uID = this.shared.userId;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      })
+    };
+
+    if (!uID || uID == null) {
+      let sharedUser = JSON.parse(localStorage.getItem('user'));
+      uID = sharedUser.id;
+    }
+    console.warn(this.shared.userId);
 
     this.httpClient
-      .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list', {id: this.shared.userId})
+      .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list', {  id: uID })
       .subscribe(
         postData => {
           this.units = postData.units;
