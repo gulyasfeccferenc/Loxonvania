@@ -4,6 +4,7 @@ var regCtrl = require('./controllers/registerController');
 var unitCtrl = require('./controllers/unitController');
 var achievementCtrl = require('./controllers/achievementController');
 var playgroundCtrl = require('./controllers/_playgroundController');
+var userCtrl = require('./controllers/userController');
 
 var router = express.Router();
 
@@ -14,15 +15,15 @@ router.route('/login').post(loginCtrl.login);
 router.route('/register').post(regCtrl.register);
 
 // units
-router.route('/units/list').get(unitCtrl.list);
-router.route('/units/generate').get(unitCtrl.generate);
+router.route('/units/list').post(unitCtrl.list);
+router.route('/units/generate').post(unitCtrl.generate);
 
 router.route('/units/update').post(unitCtrl.update);
 router.route('/unit/fire').post(unitCtrl.fire);
 router.route('/unit/lift').post(unitCtrl.lift);
 
 // user
-// router.route('/user').post();
+router.route('/user').post(userCtrl.getUser);
 
 // achievements
 router.route('/achievments').get(achievementCtrl.achievements); // TODO typo: e is missing from everywhere, like lxn qka style:D
