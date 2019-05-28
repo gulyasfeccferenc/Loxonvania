@@ -21,13 +21,12 @@ export class UserService {
     this.httpClient
       .post<{message: string, userData}>('http://localhost:3000/api/user', { email: email != null ? email : this.user.email })
       .pipe(map((userData) => {
-        console.error("query user data");
         // @ts-ignore
         const user = userData.user;
         console.error(user);
         return {
           id: user._id,
-          points: user.points,
+          points: user.point,
           level: user.level,
           xp: user.xp,
           avatar: user.avatar,
