@@ -5,6 +5,7 @@ import {User} from '../../models/auth/user.model';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
+import {mergeMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup',
@@ -27,27 +28,32 @@ export class SignupComponent implements OnInit {
     let registration: User = {id: null, name: null, email: email, company: companyName, level: [], points: 0, xp: 30 };
     this.clearAuthError();
 
+
     this.authService.authenticate(email, password).subscribe((userData) => {
       console.log(registration);
+      console.log(userData);
       const userName = this.authService.getLoggedInUserName();
       console.warn(userName);
       registration.name = userName;
-      this.httpClient
-        .post<{message: string}>('http://localhost:3000/api/register', registration, {headers: {'Content-Type': 'application/json' } })
-        .subscribe(postData => {
-          console.log(postData);
-          this.router.navigateByUrl('/workplace');
-        }, error => {
-          if (error.error != null && error.error.message != null) {
-            this.handleAuthError(error.error.message.toLowerCase());
-          } else {
-            this.alerts.push({type: 'danger', message: error.message.toString() });
-            console.error('HIBA TÖRTÉNT:', error);
-          }
-        });
-      console.log('Message sent?');
+      this.router.navigateByUrl('/workplace');
+
+      // this.httpClient
+      //   .post<{message: string}>('http://localhost:3000/api/register', registration, {headers: {'Content-Type': 'application/json' } })
+      //   .subscribe(postData => {
+      //     console.log(postData);
+      //     this.router.navigateByUrl('/workplace');
+      //   }, error => {
+      //     console.error(error);
+      //     if (error.error != null && error.error.message != null) {
+      //       this.handleAuthError(error.error.message.toLowerCase());
+      //     } else {
+      //       this.alerts.push({type: 'danger', message: error.message.toString() });
+      //       console.error('HIBA TÖRTÉNT:', error);
+      //     },
+        // );
+      // console.log('Message sent?');
     },
-    e => {
+    (e) => {
       console.log('Registration error:', e);
       this.handleAuthError(e.error.error_description.toLowerCase());
     });
