@@ -6,6 +6,7 @@ import {User} from './models/auth/user.model';
 import {UnitService} from './unit.service';
 import {SharedService} from './shared.service';
 import {map} from 'rxjs/operators';
+import {Level} from './models/level/level.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -20,13 +21,19 @@ export class UserService {
     this.httpClient
       .post<{message: string, userData}>('http://localhost:3000/api/user', { email: email != null ? email : this.user.email })
       .pipe(map((userData) => {
-        console.error(userData);
+        console.error("query user data");
+        // @ts-ignore
+        const user = userData.user;
+        console.error(user);
         return {
-          id: userData.user._id,
-          point: userData.user.point,
-          level: userData.user.level,
-          xp: userData.user.xp,
-          avatar: userData.user.avatar
+          id: user._id,
+          points: user.points,
+          level: user.level,
+          xp: user.xp,
+          avatar: user.avatar,
+          name: user.name,
+          company: user.company,
+          email: user.email
         };
       }))
       .subscribe(

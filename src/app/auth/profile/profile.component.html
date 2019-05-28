@@ -19,5 +19,15 @@
       <p>Az LDAP szinkronizáció segítségével integrálhatjuk az ERP fiókod is. A csatlakoztatás véletlenszerűen töröl 8 munkaórát az előző 2 hétben lelogolt munkaidődből, melyet instant <strong>1000$</strong> hackpointra váltunk át! Ez az összekötés csak egyszer végezhető el!</p>
       <button class="btn btn-danger" (click)="openModal()">Ide a hackpontokkal!</button>
     </div>
+    <div class="col-sm-12 text-left mt-5 container-box p-3">
+      <h3>Felhasználói adatok</h3>
+      <p>ID: {{this.user.getUserData().id}}</p>
+      <p>XP: {{this.user.getUserData().xp}}</p>
+      <p>Level: {{this.user.getUserData().level}}</p>
+      <p>Points: {{this.user.getUserData().points}}</p>
+      <p>Company: {{this.user.getUserData().company}}</p>
+      <p>Name: {{this.user.getUserData().name}}</p>
+      <p>Email: {{this.user.getUserData().email}}</p>
+    </div>
   </div>
 </div>

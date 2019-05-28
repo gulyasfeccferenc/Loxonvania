@@ -48,7 +48,7 @@ export class SigninComponent implements OnInit {
         }))
         .subscribe(
         (next) => {
-          this.shared.userId = next;
+          this.shared.userId = next.id;
           console.log(this.shared.userId);
           this.router.navigateByUrl('/workplace');
         }
