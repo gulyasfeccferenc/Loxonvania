@@ -53,10 +53,10 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
 
   newUnitAvailable() { //TODO: Proper calculation need to be added here
     if (this.userService.getUserData() != null) {
-      console.warn("VAN USER DATA");
-      console.warn(this.userService.getUserData().points > this.newUnitPrice());
-      console.warn(this.unitService.getNrOfUnits() < this.getCapacity());
-      console.warn(this.getCapacity());
+      // console.warn("VAN USER DATA");
+      // console.warn(this.userService.getUserData().points > this.newUnitPrice());
+      // console.warn(this.unitService.getNrOfUnits() < this.getCapacity());
+      // console.warn(this.getCapacity());
       return (this.userService.getUserData().points > this.newUnitPrice()) && (this.unitService.getNrOfUnits() < this.getCapacity());
     }
     return false;

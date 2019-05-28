@@ -17,10 +17,11 @@ let dbConnString = '@loxonvaniacluster-lebqy.mongodb.net/test?retryWrites=true';
 const User = require('./models/user');//mongoose.model('user', {name: String});
 
 const app = express();
-app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({
-  extended: false
+  extended: true
 }));
+app.use(bodyParser.json());
 
 // console.log(Users.collection.get(1));
 mongoose.connect('mongodb+srv://' + usr + ':' + pw + dbConnString, { useNewUrlParser: true, useCreateIndex: true } )
