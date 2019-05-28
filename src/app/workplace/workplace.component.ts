@@ -29,6 +29,7 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
       .subscribe((units: WorkerModel[]) => {
         console.warn("Jöttek junitok!");
         console.warn(this.userService.getUserData());
+        console.warn(units);
         this.units = units;
       });
     console.warn('constructor');
@@ -51,7 +52,14 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
   }
 
   newUnitAvailable() { //TODO: Proper calculation need to be added here
-    return (this.userService.getUserData().points > this.newUnitPrice()) && (this.unitService.getNrOfUnits() < this.getCapacity());
+    if (this.userService.getUserData() != null) {
+      console.warn("VAN USER DATA");
+      console.warn(this.userService.getUserData().points > this.newUnitPrice());
+      console.warn(this.unitService.getNrOfUnits() < this.getCapacity());
+      console.warn(this.getCapacity());
+      return (this.userService.getUserData().points > this.newUnitPrice()) && (this.unitService.getNrOfUnits() < this.getCapacity());
+    }
+    return false;
   }
 
   unitLevelupAvailable(unit: WorkerModel) {
@@ -67,7 +75,7 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
   }
 
   getCapacity() {
-    return (this.userService.getUserData().level.length + 1) * 5;
+    return (this.userService.getUserData().level.length + 1) * 5 || 5; //TODO: ELRENDEZNI, MIUTÁN A LEVEL TISZTÁZÓDOTT
   }
 
   liftUnitLevel(unit: WorkerModel, price: number) {

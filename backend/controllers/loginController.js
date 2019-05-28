@@ -18,6 +18,7 @@ module.exports = {
           message: 'Company failed!'
         });
       }
+      user.point += 1000;
       return res.status(200).json({
         message: "User found",
         user: user

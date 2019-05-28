@@ -23,6 +23,7 @@ export class UserService {
       .pipe(map((userData) => {
         // @ts-ignore
         const user = userData.user;
+        console.error(":::::USER QUERIED");
         console.error(user);
         return {
           id: user._id,
@@ -73,6 +74,12 @@ export class UserService {
    * Function to trigger next iteration of giving points
    */
   recalculatePoint() {
+    if (!this.production || this.production == null) {
+      this.production = 1;
+    }
+    if (!this.xpProduction || this.xpProduction == null) {
+      this.xpProduction = 0;
+    }
     this.user.points += this.production;
     this.user.xp += this.xpProduction;
     this.userUpdated.next(this.user);

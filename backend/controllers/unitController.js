@@ -28,13 +28,7 @@ module.exports = {
     //select units from mongodb based on the userId
     userId = req.body.id; // normal use: req.body.id; // for testing with postman: req.query.id;
 
-    if(2>1) {
-      const starter = genUnit();
-      res.status(200).json({
-        message: 'Behold your new basic unit!',
-        unit: [starter],
-      });
-    } else {
+    if(userId != null) {
       Unit.find({owner: userId}).then(
         units => {
           if (units.length > 0) {
@@ -48,7 +42,7 @@ module.exports = {
             starter.save().then(result => {
               res.status(200).json({
                 message: 'Behold your new basic unit!',
-                unit: [starter],
+                units: [starter],
               });
             }).catch(error => {
               res.status(500).json({

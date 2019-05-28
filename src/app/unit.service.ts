@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subject, timer} from 'rxjs';
 import {ChangeDetectorRef, Injectable} from '@angular/core';
 import {SharedService} from './shared.service';
+import {post} from 'selenium-webdriver/http';
 
 @Injectable({ providedIn: 'root' })
 export class UnitService {
@@ -35,6 +36,8 @@ export class UnitService {
       .post<{message: string, unit: WorkerModel}>('http://localhost:3000/api/units/generate', { id: this.shared.userId })
       .subscribe(
         postData => {
+          console.log(":::GETTING NEW UNIT");
+          console.log(postData);
           this.addUnit(postData.unit);
 
           this.currentProduction += postData.unit.produce;
@@ -44,6 +47,9 @@ export class UnitService {
           this.shared.changeXP(this.currentXpGathering);
 
           this.unitsUpdated.next(this.units.slice());
+        }, error1 => {
+          console.error("ERROR OF THE GENERATE UNIT");
+          console.error(error1);
         });
   }
 
@@ -55,14 +61,14 @@ export class UnitService {
     // console.warn(this.shared.userId);
 
     this.httpClient
-      .get<{message: string, unit: WorkerModel[]}>('http://localhost:3000/api/units/list')
+      .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list', {id: this.shared.userId})
       .subscribe(
         postData => {
-          this.units = postData.unit;
+          this.units = postData.units;
           console.warn("POSTDATA");
           console.warn(postData);
           console.warn(this.units);
-          this.calcAllUnitPoint(postData.unit);
+          this.calcAllUnitPoint(postData.units);
           this.shared.changeProduceValue(this.currentProduction);
           this.shared.changeXP(this.currentXpGathering);
 
@@ -74,7 +80,7 @@ export class UnitService {
   }
 
   getNrOfUnits(): number {
-    return this.units.length;
+    return this.units.length || 0;
   }
 
   calcAllUnitPoint(units: WorkerModel[]) {

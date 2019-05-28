@@ -40,7 +40,7 @@ export class SigninComponent implements OnInit {
           console.error(userData);
           return {
             id: userData.user._id,
-            point: userData.user.point,
+            points: userData.user.point,
             level: userData.user.level,
             xp: userData.user.xp,
             avatar: userData.user.avatar
