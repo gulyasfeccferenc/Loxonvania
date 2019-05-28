@@ -5,7 +5,7 @@ module.exports = {
   login: (req, res) => {
     console.log('LOGIN with routing');
     User.findOne( {
-      email: req.body.email //TODO: Check for company not null
+      name: req.body.email //TODO: Check for company not null
     }).then(user => {
       if (!user) {
         return res.status(401).json({
@@ -19,7 +19,9 @@ module.exports = {
       }
 
     }, error => {
-
+      return res.status(500).json({
+        message: 'Login failed! ' + error
+      });
     });
   } // end of login
 

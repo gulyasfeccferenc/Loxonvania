@@ -101,13 +101,25 @@ module.exports = {
   } // end of update
   ,
   fire: (req, res) => {
-    console.log(req);
+    const id = req.body.id;
+    Unit.remove( {_id: id} ).then(
+      r => {
+        return res.status(401).json({
+          message: 'removed',
+        });
+      },
+      error => {
+        message: 'Error during firing a unit: ' + error
+      }
+    );
+
     res.status(200).json(
       { message: 'Fired'}
     );
   } // end of destroy
   ,
   lift: (req, res) => {
+    const id = req.body.id;
     res.status(200).json(
       { message: 'Lifted ' }
     );

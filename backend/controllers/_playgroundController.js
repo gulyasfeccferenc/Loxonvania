@@ -7,7 +7,7 @@ module.exports = {
 
   play: (req, res) => {
     console.log('PLAY');
-    /*User.find({}).then( user =>
+    User.find({}).then( user =>
       {
         return res.status(401).json({
           message: 'got user: ' + user
@@ -18,9 +18,22 @@ module.exports = {
           message: 'not got user: ' + error
         });
       }
+    )
+    /*
+    User.remove({name: 'ferenc.gulyas@loxon.eu'}).then(
+      r => {
+        return res.status(401).json({
+          message: 'removed Fecc',
+        });
+      }
+      ,
+      error => {
+        message: 'error remove: ' + error
+      }
     );
     */
 
+    /*
     Unit.remove({}).then(
       r => {
         return res.status(401).json({
@@ -31,7 +44,7 @@ module.exports = {
         message: 'error remove: ' + error
       }
     );
-
+*/
 
     /*Unit.find({}).then( unit =>
       {
