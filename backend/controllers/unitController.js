@@ -84,6 +84,21 @@ module.exports = {
     }
   } // end of list
   ,
+  update: (req, res) => {
+    const id = req.body.unitId;
+
+    Unit.updateOne({_id : id}).then(
+      result => {
+
+        res.status(200).json(
+          {
+            message: 'Updated ' + id
+          }
+        )
+      }
+  )
+  } // end of update
+  ,
   generate: (req, res) => {
     userId = req.body.id; // req.body.id;
 
@@ -107,18 +122,9 @@ module.exports = {
 
   } // end of generate
   ,
-  update: (req, res) => {
-    const id = req.body.id;
-    res.status(200).json(
-      {
-        message: 'Updated ' + id
-      }
-    );
-  } // end of update
-  ,
   fire: (req, res) => {
-    const id = req.body.id;
-    Unit.remove( { "_id" : id} ).then(
+    const id = req.body.unitId;
+    Unit.deleteOne( { _id : id } ).then(
       r => {
         console.warn("UNIT REMOVED");
         console.warn(r);
