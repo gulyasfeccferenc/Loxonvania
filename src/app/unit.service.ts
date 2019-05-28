@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable, Subject, timer} from 'rxjs';
 import {ChangeDetectorRef, Injectable} from '@angular/core';
 import {SharedService} from './shared.service';
 import {post} from 'selenium-webdriver/http';
+import {map} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UnitService {
@@ -58,7 +59,7 @@ export class UnitService {
    */
   getUnits() {
     // console.warn(this.shared.userId);
-    const uID = this.shared.userId;
+    let uID = this.shared.userId;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -73,6 +74,40 @@ export class UnitService {
 
     this.httpClient
       .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/units/list', {  id: uID })
+      // .pipe(map( unitData => {
+      //   @ts-ignore
+        // const unit = unitData;
+        // console.warn(":::::::::::::SINGLE UNIT MAPPING");
+        // console.warn(unit);
+        // return {
+        //   id: unit._id,
+        //   name: unit.name,
+        //   sprite: unit.sprite,
+        //   description: unit.description,
+        //   joined: unit.joined,
+        //   active: unit.active,
+        //   level: unit.level,
+        //   type: unit.type,
+        //   produce: unit.produce,
+        //   xp: unit.xp
+        // };
+      // }))
+      // .pipe(map((userData) => {
+      //   @ts-ignore
+        // const user = userData.user;
+        // console.error(":::::USER QUERIED");
+        // console.error(user);
+        // return {
+        //   id: user._id,
+        //   points: user.point,
+        //   level: user.level,
+        //   xp: user.xp,
+        //   avatar: user.avatar,
+        //   name: user.name,
+        //   company: user.company,
+        //   email: user.email
+        // };
+      // }))
       .subscribe(
         postData => {
           this.units = postData.units;
@@ -122,7 +157,7 @@ export class UnitService {
     }
   }
 
-  fireUnit(unit: WorkerModel) {
+  fireUnit(unit: WorkerModel, unitId: string, userId: string) {
     // Remove production value
     this.currentProduction -= unit.produce;
     this.shared.changeProduceValue(this.currentProduction);
@@ -131,8 +166,11 @@ export class UnitService {
     this.units.splice(this.units.indexOf(unit), 1);
 
     // TODO: Backend destroy
+    console.warn("::::::FIRING UNIT");
+    console.warn(unit.id);
+    console.warn(this.shared.userId);
     this.httpClient
-      .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/unit/fire', { id: this.shared.userId, unitId: unit.id })
+      .post<{message: string, units: WorkerModel[]}>('http://localhost:3000/api/unit/fire', { id: userId, unitId: unitId })
       .subscribe(
         postData => {
           console.error(postData);

@@ -89,19 +89,21 @@ export class WorkplaceComponent implements OnInit, OnDestroy {
    *
    * @param unit
    */
-  open(unit: WorkerModel) {
+  open(unit) {
     const rand = Math.floor(Math.random() * (+this.excuses.length - +0));
     const modalRef = this.modalService.open(ModalContentComponent);
+    console.warn(":::::::MODAL");
+    console.warn(unit._id);
     modalRef.componentInstance.title =  unit.name + ' ' + this.excuses[rand].title;
     modalRef.componentInstance.content = this.excuses[rand].content;
     modalRef.componentInstance.button = 'Nem érdekel, kirúgom!';
     modalRef.result.then((result) => {
       if (result != null && result === 1) {
-        this.unitService.fireUnit(unit);
+        this.unitService.fireUnit(unit, unit._id, this.userService.getUserData().id);
       }
     }, (reason) => {
       if (reason != null && reason === 1) {
-        this.unitService.fireUnit(unit);
+        this.unitService.fireUnit(unit, unit._id, this.userService.getUserData().id);
       }
     });
   }

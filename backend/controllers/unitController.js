@@ -32,7 +32,7 @@ module.exports = {
     console.error('LIST');
     console.warn(req.body);
     console.warn(userId);
-    const currentUser = null;
+    let currentUser = null;
 
     if(userId != null) {
       console.warn("NASDFKLAKJSDÉFKJAD");
@@ -118,19 +118,19 @@ module.exports = {
   ,
   fire: (req, res) => {
     const id = req.body.id;
-    Unit.remove( {_id: id} ).then(
+    Unit.remove( { "_id" : id} ).then(
       r => {
-        return res.status(401).json({
-          message: 'removed',
+        console.warn("UNIT REMOVED");
+        console.warn(r);
+        return res.status(200).json({
+          message: 'removed'
         });
       },
       error => {
-        message: 'Error during firing a unit: ' + error
+        return res.status(401).json({
+            message: 'Error during firing a unit: ' + error
+        });
       }
-    );
-
-    res.status(200).json(
-      { message: 'Fired'}
     );
   } // end of destroy
   ,
