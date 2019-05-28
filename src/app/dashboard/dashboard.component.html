@@ -3,19 +3,37 @@
     <ngb-carousel *ngIf="slides">
       <ng-template ngbSlide>
         <img [src]="slides[0].src" alt="Random first slide">
+        <div class="carousel-caption">
+          <h4>Gyűjts pontokat és tapasztalatot</h4>
+          <p>A cél a minél több hackpoint ($) összegyűjtése! Szerezz új munkaerőt, gyűjts tapasztalatot, válts ki kitüntetéseket!</p>
+        </div>
       </ng-template>
       <ng-template ngbSlide>
-<!--        <img [src]="slides[0].src" alt="Random second slide">-->
+        <img [src]="slides[0].src" alt="Random second slide">
         <div class="carousel-caption">
-          <h3>Gyűjts pontokat és tapasztalatot</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <h4>Gyűjts pontokat és tapasztalatot</h4>
+          <p>Az Irodában lévő kártyák jelképezik a dolgozóid, akik megadott hackpontokat ($) és tapasztalatot (☇) termelnek minden körben.</p>
         </div>
       </ng-template>
       <ng-template ngbSlide>
         <img [src]="slides[0].src" alt="Random third slide">
         <div class="carousel-caption">
-          <h3>Third slide label</h3>
-          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          <h4>Lépj szintet</h4>
+          <p>A bal alsó sarokban követheted nyomon a hackpointjaid ($) aktuális állását és hogy mennyi tapasztalat (☇) szükséges a következő szinthez</p>
+        </div>
+      </ng-template>
+      <ng-template ngbSlide>
+        <img [src]="slides[0].src" alt="Random third slide">
+        <div class="carousel-caption">
+          <h4>Lépj szintet</h4>
+          <p>Ha elég tapasztalatod (☇) gyűlt össze, válts ki egy újonnan elérhető kitüntetést egy adott szintről a szintlépéshez!</p>
+        </div>
+      </ng-template>
+      <ng-template ngbSlide>
+        <img [src]="slides[0].src" alt="Random third slide">
+        <div class="carousel-caption">
+          <h4>Lépj szintet</h4>
+          <p>Minél több szintről van kitüntetésed, annál nagyobb az irodád kapacitása, így egyre többet termelhetsz!</p>
         </div>
       </ng-template>
     </ngb-carousel>
