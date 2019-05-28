@@ -47,8 +47,10 @@ export class WidgetComponent implements OnInit, OnDestroy {
     this.pointSubscription = this.userService
       .getUserUpdatedListener()
       .subscribe((user: User) => {
-        this.points = user.points;
-        this.xp = user.xp;
+        if (user != null) {
+          this.points = user.points;
+          this.xp = user.xp;
+        }
       });
   }
 

@@ -6,6 +6,8 @@ import {Router} from '@angular/router';
 import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient} from '@angular/common/http';
 import {SharedService} from '../../shared.service';
+import {User} from '../../models/auth/user.model';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-signin',
@@ -15,7 +17,11 @@ import {SharedService} from '../../shared.service';
 export class SigninComponent implements OnInit {
   alerts = [];
 
-  constructor(private authService: AuthService, private tokenService: TokenService, private router: Router, private httpClient: HttpClient) { }
+  constructor(private authService: AuthService,
+              private tokenService: TokenService,
+              private router: Router,
+              private httpClient: HttpClient,
+              private shared: SharedService) { }
 
   ngOnInit() {
   }
@@ -29,10 +35,24 @@ export class SigninComponent implements OnInit {
       console.log(this.tokenService.getUserName());
       console.log(this.tokenService.getEverything());
 
-      this.httpClient.post('http://localhost:3000/api/login', {email}).subscribe(
+      this.httpClient
+        .post<{message: string, user}>('http://localhost:3000/api/login', {email})
+        .pipe(map((userData) => {
+          console.error(userData);
+          return {
+            id: userData.user._id,
+            point: userData.user.point,
+            level: userData.user.level,
+            xp: userData.user.xp,
+            avatar: userData.user.avatar
+          };
+        }))
+        .subscribe(
         (next) => {
-          console.log("HTTP CLIENT'S NEXT");
+          console.log("NEXT::::::::::::::");
           console.log(next);
+          this.shared.userId = next;
+          console.log(this.shared.userId);
           this.router.navigateByUrl('/workplace');
         }
       );

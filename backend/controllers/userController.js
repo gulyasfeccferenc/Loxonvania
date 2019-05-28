@@ -7,7 +7,7 @@ module.exports = {
       user => {
         res.status(200).json({
           message: 'Here is your user',
-          userId: user._id
+          user: user
         });
       },
       error => {

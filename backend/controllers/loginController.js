@@ -7,6 +7,7 @@ module.exports = {
     User.findOne( {
       name: req.body.email //TODO: Check for company not null
     }).then(user => {
+      console.warn(user);
       if (!user) {
         return res.status(401).json({
           message: 'Authentication failed!'
@@ -17,6 +18,10 @@ module.exports = {
           message: 'Company failed!'
         });
       }
+      return res.status(200).json({
+        message: "User found",
+        user: user
+      })
 
     }, error => {
       return res.status(500).json({

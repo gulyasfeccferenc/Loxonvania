@@ -5,33 +5,47 @@ import {Injectable} from '@angular/core';
 import {User} from './models/auth/user.model';
 import {UnitService} from './unit.service';
 import {SharedService} from './shared.service';
+import {map} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private user: User = {
-    id: 'asdfasdfad',
-    name: 'Fecc',
-    email: 'ferenc.gulyas@loxon.eu',
-    points: 1000,
-    xp: 30,
-    company: 'Loxonvania',
-    level: []
-  };
+  private user: User;
   private production: number;
   private xpProduction: number;
   private userUpdated = new BehaviorSubject<User>(this.user);
 
   constructor(private httpClient: HttpClient, private unitService: UnitService, private shared: SharedService) { }
 
+  queryUserData(email: string) {
+    this.httpClient
+      .post<{message: string, userData}>('http://localhost:3000/api/user', { email: email != null ? email : this.user.email })
+      .pipe(map((userData) => {
+        console.error(userData);
+        return {
+          id: userData.user._id,
+          point: userData.user.point,
+          level: userData.user.level,
+          xp: userData.user.xp,
+          avatar: userData.user.avatar
+        };
+      }))
+      .subscribe(
+        transfUserData => {
+          console.warn("USERDATA::::::");
+          console.warn(transfUserData);
+          this.user = transfUserData;
+          this.shared.userId = this.user.id;
+
+          console.log(this.shared.userId);
+          console.log(this.user.id);
+        });
+  }
+
+  setUserData(user: User) {
+    this.user = user;
+  }
+
   getUserData(): User {
-    // this.httpClient
-    //   .post<{message: string, userData: User}>('http://localhost:3000/api/user', { email: this.user.email })
-    //   .subscribe(
-    //     userData => {
-    //       this.user = userData.userData;
-    //       this.shared.userId = this.user.id;
-    //       console.log(userData);
-    //     });
     return this.user;
   }
 

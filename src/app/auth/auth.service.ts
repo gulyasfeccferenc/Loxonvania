@@ -31,7 +31,8 @@ export class AuthService {
         (data) => {
           this.tokenService.setAuthData(data);
           // this.userService.setUserEmail(username);
-          console.warn(this.userService.getUserData());
+          // console.warn(this.userService.getUserData());
+          this.userService.queryUserData(username);
           // this.router.navigateByUrl('/workplace');
           observer.next(true);
           observer.complete();
