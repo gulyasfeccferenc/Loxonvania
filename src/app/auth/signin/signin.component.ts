@@ -29,14 +29,16 @@ export class SigninComponent implements OnInit {
       console.log(this.tokenService.getUserName());
       console.log(this.tokenService.getEverything());
 
-      // this.httpClient.post('http://localhost:3000/api/login', {email}).subscribe(
-      //   () => {
-      this.router.navigateByUrl('/workplace');
-        // }
-      // );
+      this.httpClient.post('http://localhost:3000/api/login', {email}).subscribe(
+        (next) => {
+          console.log("HTTP CLIENT'S NEXT");
+          console.log(next);
+          this.router.navigateByUrl('/workplace');
+        }
+      );
     }, (e) => {
       console.log('Signin error:', e);
-      // this.handleAuthError(e.error.error_description.toLowerCase());
+      this.handleAuthError(e.error.error_description.toLowerCase());
     });
   }
 

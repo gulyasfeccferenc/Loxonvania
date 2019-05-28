@@ -29,34 +29,33 @@ export class SignupComponent implements OnInit {
     this.clearAuthError();
 
 
-    this.authService.authenticate(email, password).subscribe((userData) => {
-      console.log(registration);
-      console.log(userData);
-      const userName = this.authService.getLoggedInUserName();
-      console.warn(userName);
-      registration.name = userName;
-      this.router.navigateByUrl('/workplace');
+    this.authService
+      .authenticate(email, password)
+      .subscribe((userData) => {
+        console.log(registration);
+        console.log(userData);
+        const userName = this.authService.getLoggedInUserName();
+        console.warn(userName);
+        registration.name = userName;
+        // this.router.navigateByUrl('/workplace');
 
-      // this.httpClient
-      //   .post<{message: string}>('http://localhost:3000/api/register', registration, {headers: {'Content-Type': 'application/json' } })
-      //   .subscribe(postData => {
-      //     console.log(postData);
-      //     this.router.navigateByUrl('/workplace');
-      //   }, error => {
-      //     console.error(error);
-      //     if (error.error != null && error.error.message != null) {
-      //       this.handleAuthError(error.error.message.toLowerCase());
-      //     } else {
-      //       this.alerts.push({type: 'danger', message: error.message.toString() });
-      //       console.error('HIBA TÖRTÉNT:', error);
-      //     },
-        // );
-      // console.log('Message sent?');
-    },
-    (e) => {
-      console.log('Registration error:', e);
-      this.handleAuthError(e.error.error_description.toLowerCase());
-    });
+        this.httpClient
+          .post<{message: string}>('http://localhost:3000/api/register', registration, {headers: {'Content-Type': 'application/json' } })
+          .subscribe(postData => {
+                  console.log(postData);
+                  this.router.navigateByUrl('/workplace');
+                }, (error) => {
+                    if (error.error != null && error.error.error != null &&  error.error.error.message != null) {
+                      this.handleAuthError(error.error.error.message);
+                    } else {
+                      this.alerts.push({type: 'danger', message: error.message.toString()});
+                      console.error('HIBA TÖRTÉNT:', error);
+                    }
+            });
+      }, (error) => {
+        console.error(error);
+      }
+    );
   }
 
   companyNameRefreshed(f) {
@@ -67,15 +66,15 @@ export class SignupComponent implements OnInit {
   }
 
   handleAuthError(msg) {
-    console.warn(msg);
-    if (msg.includes('username')) {
+    const lwMsg = msg.toLowerCase();
+    if (lwMsg.includes('username')) {
       document.getElementById('email').classList.add('is-invalid');
-    } else if (msg.includes('password')) {
+    } else if (lwMsg.includes('password')) {
       document.getElementById('password').classList.add('is-invalid');
-    } else if (msg.includes('credentials')) {
+    } else if (lwMsg.includes('credentials')) {
       document.getElementById('email').classList.add('is-invalid');
       document.getElementById('password').classList.add('is-invalid');
-    } else if (msg.includes('company')) {
+    } else if (lwMsg.includes('company')) {
       document.getElementById('company').classList.add('is-invalid');
     }
     this.alerts.push({type: 'danger', message: msg});
