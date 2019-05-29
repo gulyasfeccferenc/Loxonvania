@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const unitSchema = mongoose.Schema({
+  id: {
+    type: Number,
+    require: false
+  },
   rank: {
     type: Number,
     require: true

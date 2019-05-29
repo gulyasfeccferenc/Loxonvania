@@ -2,6 +2,7 @@ const Achievement = require('../models/achievment');
 const Level = require('../models/level');
 const User = require('../models/user');
 const mongoose = require('mongoose');
+var util = require('util');
 
 function saveData(achi, type) {
   var err = '';
@@ -15,54 +16,68 @@ function saveData(achi, type) {
 }
 
 module.exports = {
-  achievements: (req, res) => {
-    //get user to list achievements and find the available achievements based on the level of the user (max level of the owned achievements)
-
-    // mindig a level + 1. achi kell
+  achievements: async function(req, res) {
     const userId = req.body.id;
-    console.log('userid: ' + userId);
+    // console.log('userid: ' + userId);
 
-    const user = User.find({_id: userId});
-    console.log('USERRR: ' + user.level);
-
-    Level.find();
-    Achievement.find({owner: userId}).then( result =>{
-      res.status(200).json({
-        message: 'Here are you achievements!',
-        levels: []
+    if(userId != null) {
+      var userresult = await User.findOne({_id: userId}).catch(e =>{
+        log.error('await User find error');
       });
-    }).catch(e => {
+      // mindig a level + 2. achi kell
+      var lessThanLevel = userresult.level + 2;
 
-    });
+      var levelObjects = [];
+      var levels = await Level.find({rank: {$lt: lessThanLevel}}).catch(e =>{
+        log.error('await level find error');
+      });
+      for (var i = 0; i < levels.length; i++) {
+        var iLevelAchievements = [];
 
+        for (var j = 0; j < levels[i].achievments.length; j++) {
+          console.log('level i j ');
+          const achi = await Achievement.findOne({/*owner: userId,*/ _id: levels[i].achievments[j]}).catch(e => {
+            log.error('await Achievement findOne error');
+          });
+          achi.visible = true;
+          if (achi.owners.includes(userId)) {
+            achi.owned = true;
+          }
+          iLevelAchievements.push(achi);
+        } // end for j
 
-    /*const levels = [
-      {id: null, rank: 1, name: 'Kezdő', achievments: [
-          {id: null, name: 'Pontduplázó', desc: 'Megduplázza az aktuális pontszámod', level: 3, visible: true, options: 'PONTx2', owned: true}
-        ] },
-      {id: null, rank: 2, name: 'Haladó', achievments: [
-          {id: null, name: 'Ponttriplázó', desc: 'Megháromszorozza az aktuális pontszámod', level: 3, visible: true, options: 'PONTx3', owned: false},
-          {id: null, name: 'Fizetett Túlóra', desc: 'Egységeid kétszer több hackpontot ($) termelnek', level: 3, visible: true, options: 'PRODx2', owned: true}
-        ] },
-      {id: null, rank: 3, name: 'Profi', achievments: [
-          {id: null, name: 'Agilitás', desc: 'Plusz 2 pont minden egység pont és tapasztalatgyűjtéséhez', level: 3, visible: true, options: 'XP+2PROD+2', owned: false},
-          {id: null, name: '0 kiülés', desc: 'Az XP termelés duplájára emelkedik', level: 3, visible: true, options: 'XPx2', owned: true},
-          {id: null, name: 'Teljesítményértékelés', desc: '-1 hackpont ($), +2 tapasztalat', level: 3, visible: true, options: 'PROD-1XP+2', owned: false}
-        ] }
-    ];
-    res.status(200).json({
-      message: 'Wow, this is done!',
-      levels: levels
-    }).pretty = true;*/
+        levels[i].achievments = iLevelAchievements;
+
+      } // end for i
+
+      res.status(200).json({
+        message: 'Here are your achievements!',
+        levels: levels // levelObjects
+      }).pretty = true;
+    } else {
+      console.error('AchievementController User hiba van. Nincs userId!');
+      res.status(500).json({
+        message: 'Here are your none ach!',
+        levels: levels
+      }).pretty = true;
+    }
+
+  } // end of achievements
+  ,
+  buyAchievement: (req, response) => {
+    // add achievement to owned
+    
+    // increase user level based on the achievement level
   }
   ,
-  createDataStructure: (req, res) => {
+  createDataStructure: async (req, res) => {
+    // to reset achievements
     /*if(1 < 2) {
       Achievement.collection.dropIndexes(function (err, results) {
-        log.error('a drop ind err');
+        console.error('a drop ind err');
       });
       Level.collection.dropIndexes(function (err, results) {
-        log.error('l drop ind err');
+        console.error('l drop ind err');
       });
       mongoose.deleteModel('Achievment');
       mongoose.deleteModel('Level');
@@ -91,14 +106,14 @@ module.exports = {
     errs = [];
 
     //* before creating new structure, empty the old collections
-    Achievement.deleteMany({}).then( r => {
+    await Achievement.deleteMany({}).then( r => {
       console.log('removed all achievements: ' + JSON.stringify(r));
     }).catch( e => {
       console.log('all delete from achievement failed: ' + e);
       errs.push('all delete from achievement failed: ' + e);
     });
 
-    Level.deleteMany({}).then( r => {
+    await Level.deleteMany({}).then( r => {
       console.log('removed all levels: ' + JSON.stringify(r));
     }).catch( e => {
       console.log('all delete from level failed: ' + e);
@@ -111,53 +126,82 @@ module.exports = {
     // level 1 related achievements
 
     const achi1_1 = new Achievement({
-      name: 'Pontduplázó', desc: 'Megduplázza az aktuális pontszámod', price: 1000, level: 3, visible: false, options: 'PONTx2', owners: []
+      name: 'Pontduplázó', desc: 'Megduplázza az aktuális pontszámod', price: 1000, level: 3, visible: false, options: 'PONTx2', owned: false, owners: ['5cebc4357e03d42c84985335']
     });
-    errs.push(saveData(achi1_1, 'achi'));
+    var err = saveData(achi1_1, 'achi');
+    if(err) {
+      errs.push(err);
+    }
 
     const level1 = new Level({
       rank: 1, name: 'Kezdő', achievments: [achi1_1._id]
     });
-    errs.push(saveData(level1, 'level'));
+    var err = saveData(level1, 'level');
+    if(err) {
+      errs.push(err);
+    }
 
     // *****************************************************************************************************************
     // level 2 related achievements
     const achi2_1 = new Achievement({
-      name: 'Ponttriplázó', desc: 'Megháromszorozza az aktuális pontszámod', price: 1000, level: 3, visible: false, options: 'PONTx3', owners: []
+      name: 'Ponttriplázó', desc: 'Megháromszorozza az aktuális pontszámod', price: 1000, level: 3, visible: false, options: 'PONTx3', owned: false, owners: []
     });
-    errs.push(saveData(achi2_1, 'achi'));
+    var err = saveData(achi2_1, 'achi');
+    if(err) {
+      errs.push(err);
+    }
 
     const achi2_2 = new Achievement({
-      name: 'Fizetett Túlóra', desc: 'Egységeid kétszer több hackpontot ($) termelnek', price: 1000, level: 3, visible: false, options: 'PRODx2', owners: []
+      name: 'Fizetett Túlóra', desc: 'Egységeid kétszer több hackpontot ($) termelnek', price: 1000, level: 3, visible: false, options: 'PRODx2', owned: false, owners: []
     });
-    errs.push(saveData(achi2_2, 'achi'));
+    var err = saveData(achi2_2, 'achi');
+    if(err) {
+      errs.push(err);
+    }
 
     const level2 = new Level({
       rank: 2, name: 'Haladó', achievments: [achi2_1._id, achi2_2._id]
     });
-    errs.push(saveData(level2, 'level'));
+    var err = saveData(level2, 'level');
+    if(err) {
+      errs.push(err);
+    }
 
     // *****************************************************************************************************************
     // level 3 related achievements
     const achi3_1 = new Achievement({
-      name: 'Agilitás', desc: 'Plusz 2 pont minden egység pont és tapasztalatgyűjtéséhez', price: 1000, level: 3, visible: false, options: 'XP+2;PROD+2', owners: []
+      name: 'Agilitás', desc: 'Plusz 2 pont minden egység pont és tapasztalatgyűjtéséhez', price: 1000, level: 3, visible: false, options: 'XP+2;PROD+2', owned: false, owners: []
     });
-    errs.push(saveData(achi3_1, 'achi'));
+    var err = saveData(achi3_1, 'achi');
+    if(err) {
+      errs.push(err);
+    }
 
     const achi3_2 = new Achievement({
-      name: '0 kiülés', desc: 'Az XP termelés duplájára emelkedik', price: 1000, level: 3, visible: false, options: 'XPx2', owners: []
+      name: '0 kiülés', desc: 'Az XP termelés duplájára emelkedik', price: 1000, level: 3, visible: false, options: 'XPx2', owned: false, owners: []
     });
-    errs.push(saveData(achi3_2, 'achi'));
+    var err = saveData(achi3_2, 'achi');
+    if(err) {
+      errs.push(err);
+    }
 
     const achi3_3 = new Achievement({
-      name: 'Teljesítményértékelés', desc: '-1 hackpont ($), +2 tapasztalat', price: 1000, level: 3, visible: false, options: 'PROD-1;XP+2', owners: []
+      name: 'Teljesítményértékelés', desc: '-1 hackpont ($), +2 tapasztalat', price: 1000, level: 3, visible: false, options: 'PROD-1;XP+2', owned: false, owners: []
     });
-    errs.push(saveData(achi3_3, 'achi'));
+    var err = saveData(achi3_3, 'achi');
+    if(err) {
+      errs.push(err);
+    }
 
     const level3 = new Level({
       rank: 3, name: 'Profi', achievments: [achi3_1._id, achi3_2._id, achi3_3._id]
     });
-    errs.push(saveData(level3, 'level'));
+    var err = saveData(level3, 'level');
+    if(err) {
+      errs.push(err);
+    }
+
+
     console.log('ERRRRRRRRRRRRRRRRRRRRRRS');
     console.log(errs);
 

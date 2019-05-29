@@ -14,6 +14,10 @@ export interface Achievment {
 * */
 
 const unitSchema = mongoose.Schema({
+  id: {
+    type: Number,
+    require: false
+  },
   name: {
     type: String,
     require: true,
@@ -35,10 +39,19 @@ const unitSchema = mongoose.Schema({
     type: Boolean,
     require: true
   },
+  owned: {
+    type: Boolean,
+    require: false
+  },
   options: {
     type: String,
     require: true
-  }
+  },
+  owners: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    require: false
+  }]
 });
 
 //unitSchema.plugin(uniqueValidator);

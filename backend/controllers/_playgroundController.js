@@ -7,7 +7,7 @@ module.exports = {
 
   play: (req, res) => {
     console.log('PLAY');
-    User.find({}).then( user =>
+    User.find({name: 'tamas.enyedi@loxon.eu'}).then( user =>
       {
         return res.status(401).json({
           message: 'got user: ' + user

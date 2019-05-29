@@ -24,8 +24,7 @@ module.exports = {
     const points = req.body.points;
     const xp = req.body.xp;
     // előző állapothoz képest nem nőttek annyival, amennyi nem lehetséges, azaz
-    // pontok validálása: továbbiakban nice to have
-    // kapok xp,
+    // pontok validálása: továbbiakban nice to have// kapok xp,
     console.log("Kapott adatok:");
     console.log(userId, points, xp);
     User.findOne({_id: userId}).then( value => {
@@ -42,8 +41,7 @@ module.exports = {
       res.status(404).json({
         message: 'User to sync not found!'
       })
-    });
-  },
+    });  },
   top10: (req, res) => {
     User.find().sort({"points": -1}).limit(3).then(val => {
       res.status(200).json({
