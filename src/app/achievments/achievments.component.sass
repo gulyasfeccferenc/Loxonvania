@@ -1,16 +1,17 @@
 .achievments
   h3
-    text-align: left;
+    text-align: left
     border-bottom: 1px solid rgba(255,255,255,.25)
     color: rgba(255,255,255,.5)
     text-transform: capitalize
 
     .badge
-      font-size: 12px;
-      vertical-align: super;
+      font-size: 12px
+      vertical-align: super
 
   .achievment
-    border-radius: 0.5rem;
+    cursor: default
+    border-radius: 0.5rem
     background-color: rgba(255,255,255,.1)
     -webkit-transition: all 1s ease
     -moz-transition: all 1s ease
@@ -18,11 +19,26 @@
     -o-transition: all 1s ease
     transition: all 1s ease
 
+    span
+      display: block
+      position: absolute
+      background: yellow
+      padding: 0px 18px
+      -webkit-transform: rotate(45deg)
+      transform: rotate(45deg)
+      right: -20px
+      top: 9px
+      border-radius: 0px
+      border-top-left-radius: 50px
+      border-top-right-radius: 50px
+
     .card-body
       border: 1px solid rgba(235, 232, 30, 0.5)
       padding: 12px
       margin: 1px
       border-radius: 0.5rem
+      position: relative
+      overflow: hidden
 
   .achievment:hover
     background-color: rgba(255,255,255,.25)
@@ -30,4 +46,5 @@
 
   .achievment.available
     border: 3px dashed
+    cursor: alias
 
