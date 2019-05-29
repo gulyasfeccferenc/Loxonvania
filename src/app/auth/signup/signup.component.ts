@@ -54,6 +54,8 @@ export class SignupComponent implements OnInit {
             });
       }, (error) => {
         console.error(error);
+        this.alerts.push({type: 'danger', message: error.message.toString()});
+        this.authService.logout();
       }
     );
   }
