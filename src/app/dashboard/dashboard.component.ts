@@ -14,7 +14,9 @@ export class DashboardComponent implements OnInit {
     {name: 'Borbak Trufa', level: 100, points: 1000, company: 'Csülök Bt'}
   ];
   slides = [
-    {src: '/assets/tutorial_01.jpg'}
+    {src: '/assets/tutorial_01.jpg'},
+    {src: '/assets/tutorial_02.jpg'},
+    {src: '/assets/tutorial_03.jpg'}
   ]
 
   constructor() { }
