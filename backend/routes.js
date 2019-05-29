@@ -24,9 +24,11 @@ router.route('/unit/lift').post(unitCtrl.lift);
 
 // user
 router.route('/user').post(userCtrl.getUser);
+router.route('/user/update').post(userCtrl.updateUser);
 
 // achievements
-router.route('/achievments').get(achievementCtrl.achievements); // TODO typo: e is missing from everywhere, like lxn qka style:D
+router.route('/achievments').post(achievementCtrl.achievements); // TODO typo: e is missing from everywhere, like lxn qka style:D
+router.route('/achievments/createdatastructure').post(achievementCtrl.createDataStructure); // TODO typo: e is missing from everywhere, like lxn qka style:D
 
 // playground
 router.route('/playground').get(playgroundCtrl.play);

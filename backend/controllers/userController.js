@@ -19,5 +19,15 @@ module.exports = {
         });
       }
     );
+  },
+  updateUser: (req, res) => {
+    const userId = req.body.id;
+    // előző állapothoz képest nem nőttek annyival, amennyi nem lehetséges, azaz
+    // pontok validálása: továbbiakban nice to have
+
+    // kapok xp, 
+    User.findOne({_id: userId}).then( res => {
+
+    });
   }
 }

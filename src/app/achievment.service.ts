@@ -14,10 +14,11 @@ export class AchievmentService {
     // this.achievments.push(new AchievmentComponent(name, description, level));
   }
 
-  getLevels() {
+  getLevels(userId: string) {
     this.levels.slice();
+
     this.httpClient
-      .get<{message: string, levels: Level[]}>('http://localhost:3000/api/achievments')
+      .post<{message: string, levels: Level[]}>('http://localhost:3000/api/achievments', {id: userId})
       .subscribe(
         postData => {
           this.levels = postData.levels;
