@@ -25,21 +25,19 @@ function genUnit(userId) {
 
 module.exports = {
 
-  list: (req, res) => {
+  list: async (req, res) => {
     //select units from mongodb based on the userId
     userId = req.body.id; // normal use: req.body.id; // for testing with postman: req.query.id;
 
     console.error('LIST');
     console.warn(req.body);
     console.warn(userId);
-    let currentUser = null;
+    //let currentUser = null;
 
     if(userId != null) {
       console.warn("NASDFKLAKJSDÉFKJAD");
 
-      User.findOne({_id: userId}).then(queriedUser => {
-        currentUser = queriedUser;
-      }).catch( error => {
+      const currentUser = await User.findOne({_id: userId}).catch( error => {
         console.log(error);
       });
       Unit.find({owner: currentUser}).then(

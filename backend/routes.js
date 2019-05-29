@@ -26,9 +26,11 @@ router.route('/unit/lift').post(unitCtrl.lift);
 router.route('/user').post(userCtrl.getUser);
 router.route('/user/update').post(userCtrl.updateUser);
 router.route('/user/top10').get(userCtrl.top10);
+
 // achievements
 router.route('/achievments').post(achievementCtrl.achievements);
 router.route('/achievments/createdatastructure').post(achievementCtrl.createDataStructure);
+router.route('/achievment/buy').post(achievementCtrl.buyAchievement);
 
 // playground
 router.route('/playground').get(playgroundCtrl.play);
