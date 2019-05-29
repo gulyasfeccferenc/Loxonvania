@@ -1,5 +1,5 @@
 export interface Achievment {
-  id: number;
+  id: string;
   name: string;
   price: number;
   desc: string;
