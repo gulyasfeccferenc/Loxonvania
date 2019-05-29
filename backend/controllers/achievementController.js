@@ -64,10 +64,37 @@ module.exports = {
 
   } // end of achievements
   ,
-  buyAchievement: (req, response) => {
+  buyAchievement: async(req, response) => {
     // add achievement to owned
+    const userId = req.body.id;
+    const achiId = req.body.achiid;
     
     // increase user level based on the achievement level
+    User.findOne({_id: userId}).then( value => {
+      const achi = Achievement.findOne({_id: achiId}).catch(e =>{});
+      const achiLevel = achi.level;
+      const userLevel = value.level;
+      if(userLevel < achiLevel) {
+        console.log('&&&&&&&&&&&& UPDATED USER LEVEL');
+        User.updateOne({_id: userId}, {$set: {"level": achiLevel}}).then(resValue => {
+          console.log(resValue);
+        })
+      }
+    }, error => {
+      console.error('Error while syncing: ', error);
+      res.status(404).json({
+        message: 'User to sync not found!'
+      })
+    });
+
+    // válaszul az összes levelt visszaadni!
+    const levels = await Level.find({}).catch(e => {
+      console.log('buy error ' + e);
+    });
+    res.status(500).json({
+      message: 'Here are your all levels!',
+      levels: levels
+    }).pretty = true;
   }
   ,
   createDataStructure: async (req, res) => {
