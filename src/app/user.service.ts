@@ -1,12 +1,10 @@
-import {WorkerModel} from './models/worker/worker.model';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {User} from './models/auth/user.model';
 import {UnitService} from './unit.service';
 import {SharedService} from './shared.service';
 import {map} from 'rxjs/operators';
-import {Level} from './models/level/level.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -23,8 +21,6 @@ export class UserService {
       .pipe(map((userData) => {
         // @ts-ignore
         const user = userData.user;
-        console.error(":::::USER QUERIED");
-        console.error(user);
         return {
           id: user._id,
           points: user.point,

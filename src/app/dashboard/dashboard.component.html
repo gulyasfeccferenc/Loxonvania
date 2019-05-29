@@ -47,16 +47,16 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Név (Cég)</th>
-        <th scope="col">Szint</th>
-        <th scope="col">Pontszám</th>
+        <th scope="col" class="text-center">Szint</th>
+        <th scope="col" class="text-right">Pontszám</th>
       </tr>
       </thead>
       <tbody>
         <tr *ngFor="let lead of leaders">
           <th scope="row">*</th>
           <td>{{ lead.name }} ( {{ lead.company }} )</td>
-          <td>{{ lead.level }}</td>
-          <td>{{ lead.points }}</td>
+          <td class="text-center">{{ lead.level }}</td>
+          <td class="text-right">{{ lead.point }}</td>
         </tr>
       </tbody>
     </table>

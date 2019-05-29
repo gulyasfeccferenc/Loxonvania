@@ -4,6 +4,7 @@ import {Observable, Subject, Subscription, timer} from 'rxjs';
 import {UnitService} from '../unit.service';
 import {User} from '../models/auth/user.model';
 import {SharedService} from '../shared.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-widget',
@@ -15,17 +16,18 @@ export class WidgetComponent implements OnInit, OnDestroy {
   private produce = 0; // Point production of every minute
   private xp = 0; // User's sum of experience
   private xpProduction = 0; // XP production of every minute
-  everySecond: Observable<number> = timer(0, 1000);
+  everySecond: Observable<number> = timer(0, 1000 * 30);
   private subscription: Subscription;
   private pointSubscription;
   private produceSubscription: Subject<number>;
   private xpSubscription: Subject<number>;
 
-  constructor(private userService: UserService, private unitService: UnitService, private shared: SharedService) {
+  constructor(private userService: UserService, private unitService: UnitService, private shared: SharedService, private httpClient: HttpClient) {
     // This timer will trigger point/xp recalculation on each tick
     this.subscription = this.everySecond.subscribe((seconds) => {
       if (seconds > 0) {
         this.userService.recalculatePoint();
+        this.syncDataWithServer();
       }
     });
 
@@ -57,5 +59,22 @@ export class WidgetComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.pointSubscription.unsubscribe();
+    this.syncDataWithServer();
+  }
+
+  syncDataWithServer() {
+    this.httpClient
+      .post('http://localhost:3000/api/user/update',
+        {
+          id: this.userService.getUserData().id,
+          points: this.userService.getUserData().points,
+          xp: this.userService.getUserData().xp
+        })
+      .subscribe( value => {
+        console.warn('Sync done!', value);
+        this.userService.queryUserData(this.userService.getUserData().name);
+      }, error1 => {
+        console.error('Error while syncing: ', error1);
+      });
   }
 }
