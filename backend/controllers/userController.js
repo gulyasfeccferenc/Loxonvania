@@ -25,11 +25,11 @@ module.exports = {
     const xp = req.body.xp;
     // előző állapothoz képest nem nőttek annyival, amennyi nem lehetséges, azaz
     // pontok validálása: továbbiakban nice to have// kapok xp,
-    console.log("Kapott adatok:");
-    console.log(userId, points, xp);
+    // console.log("Kapott adatok:");
+    // console.log(userId, points, xp);
     User.findOne({_id: userId}).then( value => {
       User.updateOne({_id: userId}, { $set: {"point": points, "xp": xp}}).then(resValue => {
-        console.log(resValue);
+        // console.log(resValue);
         res.status(200).json({
           message: 'User synced successfully!',
           points: points, // TODO: This could be fixed in a further version, where we check whether the sent point value is valid

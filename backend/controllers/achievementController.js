@@ -1,8 +1,116 @@
 const Achievement = require('../models/achievment');
 const Level = require('../models/level');
 const User = require('../models/user');
+const Unit = require('../models/worker');
 const mongoose = require('mongoose');
 var util = require('util');
+
+
+/*
+* Achievement uprade effect handling
+* */
+
+const sign_mul = '*';
+const sign_add = '+';
+const sign_sub = '-';
+
+const opt_pont = 'PONT';
+const opt_prod = 'PROD';
+const opt_xp = 'XP';
+
+// evalOp(544, '*2') => 1088
+function evalOp(value, expr) {
+  console.log('evalop ' + value + ' ' + expr);
+  return eval(value + expr);
+}
+
+function getExpr(tn) {
+  var sign = '';
+  if(tn.includes(sign_mul)) {
+    sign = sign_mul;
+  }
+  else if(tn.includes(sign_add)) {
+    sign = sign_add;
+  }
+  else if(tn.includes(sign_sub)) {
+    sign = sign_sub;
+  }
+  return sign + tn.split(sign)[1];
+}
+
+async function activateAchiOptions(userId, option) {
+  console.log('Activating for: ', userId, option);
+  var typeAndNums = [option];
+  if(option && option.includes(';')) {
+    typeAndNums = option.split(';');
+  }
+  console.log('typeAndNums: ' + typeAndNums);
+  for(var i = 0; i < typeAndNums.length; i++) {
+    var tn = typeAndNums[i];
+    var expr = getExpr(tn);
+    console.log('ACTIVATOR: ' + tn);
+    // user related: PONT
+    if(tn.includes(opt_pont)) {
+      console.log('PONT activating');
+      User.findOne({_id: userId}).then(usr => {
+        var points = usr.point;
+        console.log('PONT usr: ' + util.inspect(usr));
+        console.log('PONT pts: ' + points);
+        var upgradedPoints = evalOp(points, expr);
+
+        User.updateOne({_id: userId}, { $set: {"point": upgradedPoints }}).then(resValue => {
+          console.log('PONT Achievement upgrade done successfully ', points, upgradedPoints);
+        }).catch(e => {
+          console.log('buy updateone error: ' + e);
+        });
+      }).catch(e => {
+        console.log('buy Not found user error: ' + e);
+      });
+    }
+    // unit related: PROD, XP
+    else if(tn.includes(opt_prod) || tn.includes(opt_xp)) {
+      console.log('PROD XP activating ', tn, expr);
+      const currentUser = await User.findOne({_id: userId}).catch( error => {
+        console.log(error);
+      });
+      // console.log('PROD XP USER ' + util.inspect(currentUser));
+      const units = await Unit.find({owner: currentUser._id}).catch(e => {
+        console.log('Unit find error! ' + e);
+      });
+
+      console.log('iter units');
+      for(var j = 0; j < units.length; j++) {
+        var u = units[j];
+        if(tn.includes(opt_prod)) {
+          console.log('THIS IS PROD');
+          var prod = u.produce;
+          var newProd = evalOp(prod, expr);
+          await Unit.updateOne({_id: u._id}, {$set: {produce: newProd}}).then( resValue => {
+            console.log('Unit prod upgrade done successfully!', prod, newProd);
+          }).catch(e => {
+            console.log('Unit prod upgrade error! ' + e);
+          });
+        } else if(tn.includes(opt_xp)) {
+          console.log('THIS IS XP');
+          var xp = u.xp;
+          var newXp = evalOp(xp, expr);
+          await Unit.updateOne({_id: u._id}, {$set: {xp: newXp}}).then( resValue => {
+            console.log('Unit xp upgrade done successfully!', xp, newXp);
+          }).catch(e => {
+            console.log('Unit xp upgrade error! ' + e);
+          });
+        }
+
+      }
+    }
+    console.log('end of for: ' + i);
+
+  } // end of for
+
+}
+
+/********************************************************************************************/
+
 
 function saveData(achi, type) {
   var err = '';
@@ -13,6 +121,31 @@ function saveData(achi, type) {
     err = type + ' save failed:' + achi.name + ' Error: ' + error;
   });
   return err;
+}
+
+async function findLevelsForUser(userId, lessThanLevel) {
+  var levels = await Level.find({rank: {$lt: lessThanLevel}}).catch(e =>{
+    log.error('await level find error');
+  });
+  for (var i = 0; i < levels.length; i++) {
+    var iLevelAchievements = [];
+
+    for (var j = 0; j < levels[i].achievments.length; j++) {
+      //console.log('level i j ');
+      const achi = await Achievement.findOne({/*owner: userId,*/ _id: levels[i].achievments[j]}).catch(e => {
+        log.error('await Achievement findOne error');
+      });
+      achi.visible = true;
+      if (achi.owners.includes(userId)) {
+        achi.owned = true;
+      }
+      iLevelAchievements.push(achi);
+    } // end for j
+
+    levels[i].achievments = iLevelAchievements;
+
+  } // end for i
+  return levels;
 }
 
 module.exports = {
@@ -26,29 +159,11 @@ module.exports = {
       });
       // mindig a level + 2. achi kell
       var lessThanLevel = userresult.level + 2;
+      // console.log('lessthan: ' + lessThanLevel);
 
-      var levelObjects = [];
-      var levels = await Level.find({rank: {$lt: lessThanLevel}}).catch(e =>{
-        log.error('await level find error');
-      });
-      for (var i = 0; i < levels.length; i++) {
-        var iLevelAchievements = [];
+      var levels = await findLevelsForUser(userId, lessThanLevel);
 
-        for (var j = 0; j < levels[i].achievments.length; j++) {
-          console.log('level i j ');
-          const achi = await Achievement.findOne({/*owner: userId,*/ _id: levels[i].achievments[j]}).catch(e => {
-            log.error('await Achievement findOne error');
-          });
-          achi.visible = true;
-          if (achi.owners.includes(userId)) {
-            achi.owned = true;
-          }
-          iLevelAchievements.push(achi);
-        } // end for j
-
-        levels[i].achievments = iLevelAchievements;
-
-      } // end for i
+      //console.log('levels: ' + util.inspect(levels));
 
       res.status(200).json({
         message: 'Here are your achievements!',
@@ -65,36 +180,57 @@ module.exports = {
   } // end of achievements
   ,
   buyAchievement: async(req, response) => {
-    // add achievement to owned
     const userId = req.body.id;
     const achiId = req.body.achiid;
-    
-    // increase user level based on the achievement level
-    User.findOne({_id: userId}).then( value => {
-      const achi = Achievement.findOne({_id: achiId}).catch(e =>{});
-      const achiLevel = achi.level;
+
+    console.log('buy achi data: ', userId, achiId);
+
+    // add achievement to owned
+    const achi = await Achievement.findOne({_id: achiId})
+      .catch(e =>{
+        console.log('buy achi error: ' + e);
+        return res.status(404).json({
+          message: 'Buy achievement -  not found!' + e
+        });
+      });
+
+    User.findOne({_id: userId}).then( async value => {
       const userLevel = value.level;
-      if(userLevel < achiLevel) {
+      const achiLevel = achi.level;
+      // check if not bought yet
+      if (!achi.owners.includes(userId)) {
+        await Achievement.updateOne( {_id: achiId}, {$push: { "owners": userId } } );
+        console.log('&&&&&&&&&&&& NOW OWNING ACHI!!!');
+
+        // TODO use achivement immediately, update user and unit related data based on the achivement
+        activateAchiOptions(userId, achi.options);
+      }
+      else if (userLevel < achiLevel) {
+        // increase user level based on the achievement level
         console.log('&&&&&&&&&&&& UPDATED USER LEVEL');
-        User.updateOne({_id: userId}, {$set: {"level": achiLevel}}).then(resValue => {
+        await User.updateOne({_id: userId}, {$set: {"level": achiLevel}}).then(resValue => {
           console.log(resValue);
         })
+      } else {
+        console.log('kthx..');
       }
-    }, error => {
-      console.error('Error while syncing: ', error);
-      res.status(404).json({
-        message: 'User to sync not found!'
-      })
+
+      // válaszul az összes levelt visszaadni!
+      const levels = findLevelsForUser(userId, userLevel < achiLevel ? achiLevel : userLevel);
+      response.status(200).json({
+        message: 'Here are your all levels!',
+        levels: levels
+      }).pretty = true;
+
+    }).catch( error => {
+      console.error('buy Error while syncing: ', error);
+      response.status(404).json({
+        message: 'User to sync not found!',
+        levels: []
+      }).pretty = true;
     });
 
-    // válaszul az összes levelt visszaadni!
-    const levels = await Level.find({}).catch(e => {
-      console.log('buy error ' + e);
-    });
-    res.status(500).json({
-      message: 'Here are your all levels!',
-      levels: levels
-    }).pretty = true;
+
   }
   ,
   createDataStructure: async (req, res) => {
@@ -171,7 +307,7 @@ module.exports = {
     // *****************************************************************************************************************
     // level 2 related achievements
     const achi2_1 = new Achievement({
-      name: 'Ponttriplázó', desc: 'Megháromszorozza az aktuális pontszámod', price: 1000, level: 3, visible: false, options: 'PONTx3', owned: false, owners: []
+      name: 'Ponttriplázó', desc: 'Megháromszorozza az aktuális pontszámod', price: 1000, level: 3, visible: false, options: 'PONT*3', owned: false, owners: []
     });
     var err = saveData(achi2_1, 'achi');
     if(err) {
@@ -179,7 +315,7 @@ module.exports = {
     }
 
     const achi2_2 = new Achievement({
-      name: 'Fizetett Túlóra', desc: 'Egységeid kétszer több hackpontot ($) termelnek', price: 1000, level: 3, visible: false, options: 'PRODx2', owned: false, owners: []
+      name: 'Fizetett Túlóra', desc: 'Egységeid kétszer több hackpontot ($) termelnek', price: 1000, level: 3, visible: false, options: 'PROD*2', owned: false, owners: []
     });
     var err = saveData(achi2_2, 'achi');
     if(err) {
@@ -205,7 +341,7 @@ module.exports = {
     }
 
     const achi3_2 = new Achievement({
-      name: '0 kiülés', desc: 'Az XP termelés duplájára emelkedik', price: 1000, level: 3, visible: false, options: 'XPx2', owned: false, owners: []
+      name: '0 kiülés', desc: 'Az XP termelés duplájára emelkedik', price: 1000, level: 3, visible: false, options: 'XP*2', owned: false, owners: []
     });
     var err = saveData(achi3_2, 'achi');
     if(err) {

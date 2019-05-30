@@ -1,9 +1,32 @@
 var faker = require('faker');
 const Unit = require('../models/worker');
 const User = require('../models/user');
+const Achievement = require('../models/achievment');
 
-function genUnit(userId) {
+
+
+async function genUnit(userId) {
   //TODO felhasznalni a powerupok erejet!!!
+
+  /*
+  * Types of achievements:
+      PONTx2
+      PONTx3
+      PRODx2
+
+      XP+2
+      PROD+2
+
+      XP*2
+
+      PROD-1
+      *
+      *
+      x + -
+  * */
+
+  // TODO get max and min [prod, xp] numbers and set it to the following 2 arrays
+
   const type = Math.floor(Math.random() * 2) + 1; // 1 or 2
   const prods = [10, 2][type-1]; // calculate based on the type
   const xp =    [1, 10][type-1]; // calculate based on the type
@@ -43,7 +66,7 @@ module.exports = {
       Unit.find({owner: currentUser}).then(
         units => {
           console.log("UNITOK");
-          console.log(units);
+          //console.log(units);
           if (units.length > 0) {
             res.status(200).json({
               message: 'Ahoy, retrieved all your beloved units.!',

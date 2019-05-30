@@ -19,6 +19,10 @@ module.exports = {
         });
       }
     )
+
+    User.updateOne({name: 'tamas.enyedi@loxon.eu'}, {$set: {produce: newProd}}).then(user=>{
+
+    });
     /*
     User.remove({name: 'ferenc.gulyas@loxon.eu'}).then(
       r => {

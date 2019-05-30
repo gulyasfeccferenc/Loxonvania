@@ -13,7 +13,7 @@ export class AchievmentService {
   addAchievment(userId: string, achievmentId: string) {
     // this.achievments.push(new AchievmentComponent(name, description, level));
     this.httpClient
-      .post<{message: string, levels: Level[]}>('http://localhost:3000/api/achievment/buy', {id: userId, achievmentId})
+      .post<{message: string, levels: Level[]}>('http://localhost:3000/api/achievment/buy', {id: userId, achiid: achievmentId})
       .subscribe(v => {
         console.log('Achievement átvétele:', v);
         this.levels = v.levels;
