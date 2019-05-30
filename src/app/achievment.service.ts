@@ -17,6 +17,7 @@ export class AchievmentService {
       .subscribe(v => {
         console.log('Achievement átvétele:', v);
         this.levels = v.levels;
+        this.achievmentsUpdated.next(this.levels.slice());
       });
   }
 

@@ -216,7 +216,7 @@ module.exports = {
       }
 
       // válaszul az összes levelt visszaadni!
-      const levels = findLevelsForUser(userId, userLevel < achiLevel ? achiLevel : userLevel);
+      const levels = await findLevelsForUser(userId, userLevel < achiLevel ? achiLevel : userLevel);
       response.status(200).json({
         message: 'Here are your all levels!',
         levels: levels

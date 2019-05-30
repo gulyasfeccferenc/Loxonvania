@@ -13,7 +13,7 @@
     <div class="col-sm-3 mb-5" *ngFor="let unit of level.achievments | achievmentpipe ">
       <div [hidden]="!unit.visible" class="card achievment {{ unit.owned ? '' : 'available' }}" (click)="this.achievmentService.addAchievment(this.user.getUserData().id, unit._id)">
         <div class="card-body">
-          <span>{{ unit.price }}$</span>
+          <span *ngIf="!unit.owned">{{ unit.price }}$</span>
           <h5 class="card-title">{{ unit.name }}</h5>
           <p class="card-text" title="{{ unit.options }}">{{ unit.desc }}</p>
         </div>

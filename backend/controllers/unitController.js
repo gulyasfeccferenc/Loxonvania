@@ -5,7 +5,7 @@ const Achievement = require('../models/achievment');
 
 
 
-async function genUnit(userId) {
+function genUnit(userId) {
   //TODO felhasznalni a powerupok erejet!!!
 
   /*
