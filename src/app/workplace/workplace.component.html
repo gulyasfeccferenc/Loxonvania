@@ -21,6 +21,7 @@
           <button [disabled]="!unitLevelupAvailable(unit)" class="btn btn-sm btn-info mr-1" (click)="liftUnitLevel(unit, getLevelUpValue(unit))"><i class="fas fa-arrow-circle-up"></i> ( {{ getLevelUpValue(unit) | numberformat}} $ )</button>
           <button class="btn btn-sm btn-danger" (click)="open(unit)"><i class="fas fa-user-times"></i></button>
         </div>
+        <p class="card-text"><i class="fas fa-dollar-sign"></i>: {{ unit.produce }}  <i class="fas fa-bolt"></i>: {{ unit.xp }}</p>
       </div>
     </div>
     <div class="col-sm-3 mb-3" *ngIf="newUnitAvailable()">
