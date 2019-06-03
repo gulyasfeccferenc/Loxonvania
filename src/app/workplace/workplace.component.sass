@@ -1,6 +1,43 @@
 .card
   max-width: 12rem
-  min-height: 320px
+  min-height: 180px
+
+  .btn
+    border: 2px solid white
+
+  .card-body
+    padding: 0
+    height: 0px
+    width: 100%
+    position: absolute
+    bottom: 0px
+    overflow: hidden
+    -webkit-transition: all .3s ease-in-out
+    -moz-transition: all .3s ease-in-out
+    -ms-transition: all .3s ease-in-out
+    -o-transition: all .3s ease-in-out
+    transition: all .3s ease-in-out
+
+  &:hover .card-body
+    height: 30px
+
+  .card-title
+    margin-bottom: 0.75rem
+    position: absolute
+    top: 0px
+    text-align: center
+    width: 100%
+    text-shadow: 1px 1px 3px black
+    -webkit-transition: all .2s ease-in
+    -moz-transition: all .2s ease-in
+    -ms-transition: all .2s ease-in
+    -o-transition: all .2s ease-in
+    transition: all .2s ease-in
+    cursor: default
+
+  &:hover .card-title
+      padding: 6px
+      background-color: rgba(0,0,0,.25)
 
   .unit-level
     position: absolute
@@ -19,7 +56,7 @@
       right: -5px
 
   .card-image
-    height: 145px
+    height: 180px
     background: rgba(146, 255, 105, 0.67)
     overflow: hidden
 

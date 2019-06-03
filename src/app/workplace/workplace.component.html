@@ -14,23 +14,26 @@
         </div>
         <div class="card-image" ngbPopover="{{ unit.description }}. Csatlakozott: {{ unit.joined | date }}" popoverTitle="{{ unit.name }}">
           <img src="{{ unit.sprite }}" class="card-img-top" alt="...">
-        </div>
-        <div class="card-body">
           <h5 class="card-title">{{ unit.name }}</h5>
           <p class="card-text"><i class="fas fa-dollar-sign"></i>: {{ unit.produce }}  <i class="fas fa-bolt"></i>: {{ unit.xp }}</p>
+        </div>
+        <div class="card-body">
           <button [disabled]="!unitLevelupAvailable(unit)" class="btn btn-sm btn-info mr-1" (click)="liftUnitLevel(unit, getLevelUpValue(unit))"><i class="fas fa-arrow-circle-up"></i> ( {{ getLevelUpValue(unit) | numberformat}} $ )</button>
           <button class="btn btn-sm btn-danger" (click)="open(unit)"><i class="fas fa-user-times"></i></button>
         </div>
       </div>
     </div>
     <div class="col-sm-3 mb-3" *ngIf="newUnitAvailable()">
-      <div class="card card-new-unit">
-        <div class="card-image">
-          <img src="https://pics.me.me/whos-that-pokemon-3323317.png" class="card-img-top" alt="...">
+      <div class="card  card-new-unit">
+        <div class="unit-level">
+          <span>???</span>
         </div>
-        <div class="card-body">
+        <div class="card-image" ngbPopover="{{ unit.description }}. Csatlakozott: {{ unit.joined | date }}" popoverTitle="{{ unit.name }}">
+          <img src="../../assets/new-unit-bg.png" class="card-img-top" alt="...">
           <h5 class="card-title">Új munkatárs!</h5>
           <p class="card-text">{{ newUnitPrice() }} $</p>
+        </div>
+        <div class="card-body">
           <button class="btn btn-sm btn-info" (click)="getNewUnit(newUnitPrice())" title="A gomb megnyomásával felveszed az adott egységet a cégedhez!"><i class="fas fa-user-plus"></i></button>
         </div>
       </div>
